@@ -118,7 +118,7 @@ namespace CAS
 		if ( IfuAdd( Parameter[1] ) )
 		  str += "-(" + Parameter[1] -> ToString() + ")";
 		else
-		  str += Parameter[1] -> ToString();
+		  str += "-" + Parameter[1] -> ToString();
 	      else
 		if ( IfuMul( Parameter[1] ) )
 		  str += "1/(" + Parameter[1] -> ToString() + ")";
