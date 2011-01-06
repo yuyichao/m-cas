@@ -1720,8 +1720,75 @@ namespace CAS
   bool Expression::PowSign( Expression * expre , Expression *&result , int length
 			    , ReplaceChain * condition )
   {
-    if ( expre -> P(1) -> ExpType == Add )
+    if ( expre -> P(1) -> ExpType == Add and expre -> P(1) -> GetAttach(0) == -1
+	 and expre -> GetAttach(0) == -1 )
       {
+	result = expre -> unalias();
+	result -> Attach[0] = 1;
+	for ( int i = 0 ; i < result -> P(1) -> NumOfPara ; i++ )
+	  result -> P(1) -> Attach[i] = -result -> P(1) -> Attach[i];
+	result = Transform( expre , length , condition );
+	return true;
+      }
+    if ( expre -> P(1) -> ExpType == Add and expre -> P(1) -> NumOfPara == 1
+	 and expre -> P(1) -> GetAttach(0) == -1 )
+      {
+	result = expre -> unalias();
+	if ( result -> Attach == NULL )
+	  {
+	    result -> Attach = new int[2];
+	    result -> Attach[0] = result -> Attach[1] = 1;
+	  }
+	result -> Attach[0] = -result -> Attach[0];
+	result -> P(1) -> Attach[0] = 1;
+	result = Transform( expre , length , condition );
+	return true;
+      }
+    if ( expre -> P(1) -> ExpType == Number
+	 and ( expre -> P(1) -> Value.RePart() < NumberType::Zero 
+	       or ( expre -> P(1) -> Value.RePart().IsZero()
+		    and expre -> P(1) -> Value.ImPart() < NumberType:: Zero )))
+      {
+	result = expre -> unalias();
+	if ( result -> Attach == NULL )
+	  {
+	    result -> Attach = new int[2];
+	    result -> Attach[0] = result -> Attach[1] = 1;
+	  }
+	result -> Attach[0] = -result -> Attach[0];
+	result -> P(1) -> Value = -expre -> P(1) -> Value;
+	result = Transform( expre , length , condition );
+	return true;
+      }
+    if ( expre -> P(0) -> ExpType==Multiply and expre -> P(0) -> GetAttach(0)==-1 )
+      {
+	result = expre -> unalias();
+	if ( result -> Attach == NULL )
+	  {
+	    result -> Attach = new int[2];
+	    result -> Attach[0] = -1;
+	    result -> Attach[1] = 1;
+	  }
+	else
+	  result -> Attach[0] = -result -> Attach[0];
+	for ( int i = 0 ; i < result -> P(0) -> NumOfPara ; i++ )
+	  result -> P(0) -> Attach[i] = -result -> P(0) -> Attach[i];
+	result = Transform( result , length , condition );
+	return true;
+      }
+    if ( expre -> GetAttach(1) == -1 and expre -> P(1) -> ExpType == Multiply )
+      {
+	result = expre -> unalias();
+	expre -> Attach[1] = 1;
+	if ( result -> P(1) -> Attach == NULL )
+	  {
+	    result -> P(1) -> Attach = new int[ expre -> P(1) -> NumOfPara ];
+	  }
+	else
+	    for ( int i = 0 ; i < expre -> P(1) -> NumOfPara ; i++ )
+	      result -> P(1) -> Attach[i] = -result -> P(1) -> Attach[i];
+	result = Transform( result , length , condition );
+	return true;
       }
     return false;
   };
@@ -1729,21 +1796,21 @@ namespace CAS
   bool Expression::PowNumber( Expression * expre , Expression *&result , int length
 			      , ReplaceChain * condition )
   {
-
+    
     return false;
   };
   
   bool Expression::PowPow( Expression * expre , Expression *&result , int length
 			   , ReplaceChain * condition )
   {
-
+    
     return false;
   };
   
   bool Expression::PowList( Expression * expre , Expression *&result , int length
 			    , ReplaceChain * condition )
   {
-
+    
     return false;
   };
   
