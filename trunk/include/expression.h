@@ -22,8 +22,6 @@
  *                                                                       *
  *************************************************************************/
 
-#include "all.h"
-
 #ifndef _EXPRESSION_H
 #define _EXPRESSION_H
 
@@ -112,9 +110,9 @@ namespace CAS
       return Attach[n];
     };
   private:
-    friend Expression * Replacement::Replace( Expression * expre ,
-					      Expression *parameters[] ) const;
-    inline Expression *& P( int n ) const{ return Parameter[n]; }
+    friend Expression* Replacement::Replace( Expression * expre ,
+					     Expression *parameters[] ) const;
+    inline Expression*& P( int n ) const{ return Parameter[n]; }
     static bool IsEmpty( string );
     static bool IsFunctionName( string );
     static bool IsConstName( string );
@@ -161,6 +159,14 @@ namespace CAS
     static bool PowZero( Expression * expre , Expression * & , int length , ReplaceChain * condition );
     static bool PowDiff( Expression * expre , Expression * & , int length , ReplaceChain * condition );
     static bool PowLog( Expression * expre , Expression * & , int length , ReplaceChain * condition );
+    static bool LogSign( Expression * expre , Expression * & , int length , ReplaceChain * condition );
+    static bool LogNumber( Expression * expre , Expression * & , int length , ReplaceChain * condition );
+    static bool LogPow( Expression * expre , Expression * & , int length , ReplaceChain * condition );
+    static bool LogList( Expression * expre , Expression * & , int length , ReplaceChain * condition );
+    static bool LogOne( Expression * expre , Expression * & , int length , ReplaceChain * condition );
+    static bool LogSame( Expression * expre , Expression * & , int length , ReplaceChain * condition );
+    static bool LogDiff( Expression * expre , Expression * & , int length , ReplaceChain * condition );
+    static bool LogLog( Expression * expre , Expression * & , int length , ReplaceChain * condition );
     static bool FunList( Expression * expre , Expression * & , int length , ReplaceChain * condition );
     static Expression * TrAdd( Expression * expre , int length , ReplaceChain * condition );
     static Expression * TrMultiply( Expression * expre , int length , ReplaceChain * condition );

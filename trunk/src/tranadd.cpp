@@ -431,7 +431,10 @@ namespace CAS
 	if ( expre -> P(i) -> ExpType == List
 	     and expre -> P(i) -> NumOfPara != 1 
 	     and expre -> P(i) -> NumOfPara != length )
-	  throw "Length of Lists must be the same.";
+	  {
+	    expre -> detach();
+	    throw "Length of Lists must be the same.";
+	  }
       }
     result = make( List , length );
     for ( int i = 0 ; i < length ; i++ )

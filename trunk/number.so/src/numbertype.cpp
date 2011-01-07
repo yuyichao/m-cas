@@ -491,9 +491,7 @@ namespace CAS
 	}
       case Double: 
 	{
-	  ostringstream Stm;
-	  Stm << Number.DoubleNumber;
-	  return Stm.str();
+	  return HighAccuracyNumber( Number.DoubleNumber ).ToString();
 	}
       case DoubleComplex:
 	{

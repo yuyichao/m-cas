@@ -126,7 +126,10 @@ namespace CAS
     Replacement replace = condition -> Find( expre -> Name );
     if ( replace.IsEmpty() ) return expre;
     if ( replace.GetParaNum() != 0 or IsFunctionName( expre -> Name ) )
-      throw "Invalid Use Of Function Name: " + expre -> Name;
+      {
+	expre -> detach();
+	throw "Invalid Use Of Function Name: " + expre -> Name;
+      }
     Expression * result = replace.GetResult();
     expre -> detach();
     return result;
@@ -156,7 +159,11 @@ namespace CAS
   Expression *Expression::TrDiff( Expression *expre , int length
 				  , ReplaceChain* condition )
   {
-    if ( !CheckArgDiff( expre ) ) throw "Invalid Input For Diff";
+    if ( !CheckArgDiff( expre ) )
+      {
+	expre -> detach();
+	throw "Invalid Input For Diff";
+      }
     if ( expre -> P(1) -> ExpType == Diff )
       {
 	Expression * result = make( Diff , 2 );
@@ -221,9 +228,15 @@ namespace CAS
     Replacement replace = condition -> Find( expre -> Name );
     if ( replace.IsEmpty() ) return expre;
     if ( IsConstName( expre -> Name ) )
-      throw "Invalid Use Of Const Name: " + expre -> Name;
+      {
+	expre -> detach();
+	throw "Invalid Use Of Const Name: " + expre -> Name;
+      }
     if ( replace.GetParaNum() != expre -> NumOfPara )
-      throw "Number Of Para Of Function " + expre -> Name + " Doesn't Match.";
+      {
+	expre -> detach();
+	throw "Number Of Para Of Function " + expre -> Name + " Doesn't Match.";
+      }
     Expression * tmp = replace.GetResult( expre -> Parameter );
     expre -> detach();
     return Transform( tmp , length , condition );
@@ -255,7 +268,11 @@ namespace CAS
   Expression * Expression::TrAdd( Expression * expre , int length
 				  , ReplaceChain * condition )
   {
-    if ( !CheckArgNormal( expre ) ) throw "Invalid Input For Add";
+    if ( !CheckArgNormal( expre ) )
+      {
+	expre -> detach();
+	throw "Invalid Input For Add";
+      }
     Expression * result;
     if ( OneAdd( expre , result , length , condition ) ) return result;
     if ( expre -> Attach != NULL )
@@ -275,7 +292,11 @@ namespace CAS
   Expression * Expression::TrMultiply( Expression * expre , int length
 				       , ReplaceChain * condition )
   {
-    if ( !CheckArgNormal( expre ) ) throw "Invalid Input For Multiply";
+    if ( !CheckArgNormal( expre ) )
+      {
+	expre -> detach();
+	throw "Invalid Input For Multiply";
+      }
     Expression * result;
     if ( OneMul( expre , result , length , condition ) ) return result;
     if ( expre -> Attach != NULL )
@@ -298,7 +319,11 @@ namespace CAS
   Expression * Expression::TrPower( Expression * expre , int length
 				    , ReplaceChain * condition )
   {
-    if ( !CheckArgTwo( expre ) ) throw "Invalid Input For Power";
+    if ( !CheckArgTwo( expre ) )
+      {
+	expre -> detach();
+	throw "Invalid Input For Power";
+      }
     Expression * result;
     if ( PowSign( expre , result , length , condition ) ) return result;
     if ( PowZero( expre , result , length , condition ) ) return result;
@@ -357,9 +382,20 @@ namespace CAS
   Expression * Expression::TrLog( Expression * expre , int length
 				  , ReplaceChain * condition )
   {
-    if ( !CheckArgFunction( expre )
-	 and !CheckArgTwo( expre )) throw "Invalid Input Of Log";
-    
+    if ( !CheckArgFunction( expre ) and !CheckArgTwo( expre ))
+      {
+	expre -> detach();
+	throw "Invalid Input Of Log";
+      }
+    Expression * result;
+    if ( LogSign( expre , result , length , condition ) ) return result;
+    if ( LogSame( expre , result , length , condition ) ) return result;
+    if ( LogNumber( expre , result , length , condition ) ) return result;
+    if ( LogPow( expre , result , length , condition ) ) return result;
+    if ( LogList( expre , result , length , condition ) ) return result;
+    if ( LogDiff( expre , result , length , condition ) ) return result;
+    if ( LogLog( expre , result , length , condition ) ) return result;
+    if ( LogOne( expre , result , length , condition ) ) return result;
     return expre;
   };
 
@@ -401,7 +437,11 @@ namespace CAS
   Expression * Expression::TrD( Expression * expre , int length
 				, ReplaceChain * condition )
   {
-    if ( !CheckArgD( expre , condition ) ) throw "Invaid Input for D";
+    if ( !CheckArgD( expre , condition ) )
+      {
+	expre -> detach();
+	throw "Invaid Input for D";
+      }
     Expression * result;
     if ( expre -> NumOfPara == 1 )
       {
@@ -423,7 +463,7 @@ namespace CAS
 	    d -> detach();
 	    var -> detach();
 	    expre -> detach();
-	    throw " Error in D1 ";
+	    throw " Error in D ";
 	  }
 	Replacement rep0 = Replacement( expre -> P(i) -> Name , NULL , 0 , diff );
 	Replacement rep1 = Replacement( "0diff" , NULL ,0, expre -> P(i) );
@@ -434,7 +474,7 @@ namespace CAS
 	    d -> detach();
 	    var -> detach();
 	    expre -> detach();
-	    throw " Error in D2 ";
+	    throw " Error in D ";
 	  }
 	expre -> P(0) = Transform( expre -> P(0) , length , condition );
 	if ( expre -> P(0) -> ExpType != Diff )
@@ -454,10 +494,10 @@ namespace CAS
 	    d -> detach();
 	    var -> detach();
 	    expre -> detach();
-	    throw " Error in D3 ";
+	    throw " Error in D ";
 	  }
 	result = Transform( result , length , condition );
-	condition -> CutTo( tmploc );
+	condition = condition -> CutTo( tmploc );
 	expre -> P(0) = result;
       }
     expre -> P(0) -> attach();
@@ -489,7 +529,11 @@ namespace CAS
   Expression * Expression::TrSin( Expression * expre , int length
 				  , ReplaceChain * condition )
   {
-    if ( !CheckArgFunction( expre ) ) throw "Invalid Input Of Sin";
+    if ( !CheckArgFunction( expre ) )
+      {
+	expre -> detach();
+	throw "Invalid Input Of Sin";
+      }
     Expression * result;
     if ( FunList( expre , result , length , condition ) ) return result;
     switch ( expre -> P(0) -> ExpType )
@@ -511,6 +555,7 @@ namespace CAS
 	  result -> P(1) -> P(1) = make( Cos , 1 );
 	  ( result -> P(1) -> P(1) -> P(0) = expre -> P(0) -> P(0) ) -> attach();
 	  expre -> detach();
+	  result = Transform( result , length , condition );
 	  return result;
 	}
       default:
@@ -522,7 +567,11 @@ namespace CAS
   Expression * Expression::TrCos( Expression * expre , int length
 				  , ReplaceChain * condition )
   {
-    if ( !CheckArgFunction( expre ) ) throw "Invalid Input Of Cos";
+    if ( !CheckArgFunction( expre ) )
+      {
+	expre -> detach();
+	throw "Invalid Input Of Cos";
+      }
     Expression * result;
     if ( FunList( expre , result , length , condition ) ) return result;
     switch ( expre -> P(0) -> ExpType )
@@ -546,6 +595,7 @@ namespace CAS
 	  result -> P(1) -> P(0) -> P(1) = make( Sin , 1 );
 	  (result -> P(1) -> P(0) -> P(1) -> P(0)=expre -> P(0) -> P(0))->attach();
 	  expre -> detach();
+	  result = Transform( result , length , condition );
 	  return result;
 	}
       default:
@@ -556,7 +606,11 @@ namespace CAS
   
   Expression * Expression::TrTan( Expression * expre , int length , ReplaceChain * condition )
   {
-    if ( !CheckArgFunction( expre ) ) throw "Invalid Input Of Tan";
+    if ( !CheckArgFunction( expre ) )
+      {
+	expre -> detach();
+	throw "Invalid Input Of Tan";
+      }
     Expression * result;
     if ( FunList( expre , result , length , condition ) ) return result;
     switch ( expre -> P(0) -> ExpType )
@@ -581,6 +635,7 @@ namespace CAS
 	  (result -> P(1) -> P(0) -> P(1) -> P(0)=expre -> P(0) -> P(0))->attach();
 	  (result -> P(1) -> P(0) -> P(2)=result-> P(1) -> P(0) -> P(1))->attach();
 	  expre -> detach();
+	  result = Transform( result , length , condition );
 	  return result;
 	}
       default:
@@ -592,7 +647,11 @@ namespace CAS
   Expression * Expression::TrCot( Expression * expre , int length
 				  , ReplaceChain * condition )
   {
-    if ( !CheckArgFunction( expre ) ) throw "Invalid Input Of Cot";
+    if ( !CheckArgFunction( expre ) )
+      {
+	expre -> detach();
+	throw "Invalid Input Of Cot";
+      }
     Expression * result;
     if ( FunList( expre , result , length , condition ) ) return result;
     switch ( expre -> P(0) -> ExpType )
@@ -619,6 +678,7 @@ namespace CAS
 	  ( result -> P(1) -> P(0) -> P(2)
 	    = result -> P(1) -> P(0) -> P(1) ) -> attach();
 	  expre -> detach();
+	  result = Transform( result , length , condition );
 	  return result;
 	}
       default:
@@ -630,7 +690,11 @@ namespace CAS
   Expression * Expression::TrSec( Expression * expre , int length
 				  , ReplaceChain * condition )
   {
-    if ( !CheckArgFunction( expre ) ) throw "Invalid Input Of Sec";
+    if ( !CheckArgFunction( expre ) )
+      {
+	expre -> detach();
+	throw "Invalid Input Of Sec";
+      }
     Expression * result;
     if ( FunList( expre , result , length , condition ) ) return result;
     switch ( expre -> P(0) -> ExpType )
@@ -657,6 +721,7 @@ namespace CAS
 	  ( result -> P(1) -> P(0) -> P(2) -> P(0)
 	    = expre -> P(0) -> P(0) ) -> attach();
 	  expre -> detach();
+	  result = Transform( result , length , condition );
 	  return result;
 	}
       default:
@@ -667,7 +732,11 @@ namespace CAS
   Expression * Expression::TrCsc( Expression * expre , int length
 				  , ReplaceChain * condition )
   {
-    if ( !CheckArgFunction( expre ) ) throw "Invalid Input Of Csc";
+    if ( !CheckArgFunction( expre ) )
+      {
+	expre -> detach();
+	throw "Invalid Input Of Csc";
+      }
     Expression * result;
     if ( FunList( expre , result , length , condition ) ) return result;
     switch ( expre -> P(0) -> ExpType )
@@ -695,6 +764,7 @@ namespace CAS
 	  ( result -> P(1) -> P(0) -> P(2) -> P(0)
 	    = expre -> P(0) -> P(0) ) -> attach();
 	  expre -> detach();
+	  result = Transform( result , length , condition );
 	  return result;
 	}
       default:
@@ -706,69 +776,333 @@ namespace CAS
   Expression * Expression::TrArcSin( Expression * expre , int length
 				     , ReplaceChain * condition )
   {
-    if ( !CheckArgFunction( expre ) ) throw "Invalid Input Of ArcSin";
-
+    if ( !CheckArgFunction( expre ) )
+      {
+	expre -> detach();
+	throw "Invalid Input Of ArcSin";
+      }
+    Expression* result;
+    if ( FunList( expre , result , length , condition ) ) return result;
+    switch ( expre -> P(0) -> ExpType )
+      {
+      case Number:
+	{
+	  NumberType value = expre -> P(0) -> Value;
+	  result = make( PrimaryFunction::ArcSin( value , length ) );
+	  expre -> detach();
+	  return result;
+	}
+      case Diff:
+	{
+	  result = make( Diff , 2 );
+	  result -> P(0) = make( ArcSin , 1 );
+	  ( result -> P(0) -> P(0) = expre -> P(0) -> P(0) ) -> attach();
+	  result -> P(1) = make( Multiply , 2 );
+	  ( result -> P(1) -> P(0) = expre -> P(0) -> P(1) ) -> attach();
+	  result -> P(1) -> P(1) = make( Power , 2 );
+	  result -> P(1) -> P(1) -> P(1) = make( -0.5 );
+	  result -> P(1) -> P(1) -> P(0) = make( Add , 2 );
+	  result -> P(1) -> P(1) -> P(0) -> P(0) = make( NumberType::One );
+	  result -> P(1) -> P(1) -> P(0) -> P(1) = make( Power , 2 );
+	  result -> P(1) -> P(1) -> P(0) -> Attach[1] = -1;
+	  result -> P(1) -> P(1) -> P(0) -> P(1) -> P(1) = make( NumberType(2) );
+	  (result->P(1)->P(1)->P(0)->P(1)->P(0)=expre->P(0)->P(0))->attach();
+	  expre -> detach();
+	  result = Transform( result , length , condition );
+	  return result;
+	}
+      default:
+	break;
+      };
     return expre;
   };
   
   Expression * Expression::TrArcCos( Expression * expre , int length
 				     , ReplaceChain * condition )
   {
-    if ( !CheckArgFunction( expre ) ) throw "Invalid Input Of ArcCos";
-
+    if ( !CheckArgFunction( expre ) )
+      {
+	expre -> detach();
+	throw "Invalid Input Of ArcCos";
+      }
+    Expression* result;
+    if ( FunList( expre , result , length , condition ) ) return result;
+    switch ( expre -> P(0) -> ExpType )
+      {
+      case Number:
+	{
+	  NumberType value = expre -> P(0) -> Value;
+	  result = make( PrimaryFunction::ArcCos( value , length ) );
+	  expre -> detach();
+	  return result;
+	}
+      case Diff:
+	{
+	  result = make( Diff , 2 );
+	  result -> P(0) = make( ArcCos , 1 );
+	  ( result -> P(0) -> P(0) = expre -> P(0) -> P(0) ) -> attach();
+	  result -> P(1) = make( Multiply , 2 );
+	  ( result -> P(1) -> P(0) = expre -> P(0) -> P(1) ) -> attach();
+	  result -> P(1) -> P(1) = make( Power , 2 );
+	  result -> P(1) -> P(1) -> P(1) = make( -0.5 );
+	  result -> P(1) -> P(1) -> P(0) = make( Add , 2 );
+	  result -> P(1) -> P(1) -> P(0) -> P(0) = make( NumberType::One );
+	  result -> P(1) -> P(1) -> P(0) -> P(1) = make( Power , 2 );
+	  result -> P(1) -> P(1) -> P(0) -> Attach[1] = -1;
+	  result -> P(1) -> P(1) -> P(0) -> P(1) -> P(1) = make( NumberType(2) );
+	  (result->P(1)->P(1)->P(0)->P(1)->P(0)=expre->P(0)->P(0))->attach();
+	  expre -> detach();
+	  expre = result -> P(1);
+	  result -> P(1) = make( Add , 1 );
+	  result -> P(1) -> Attach[0] = -1;
+	  result -> P(1) -> P(0) = expre;
+	  result = Transform( result , length , condition );
+	  return result;
+	}
+      default:
+	break;
+      };
     return expre;
   };
   
   Expression * Expression::TrArcTan( Expression * expre , int length
 				     , ReplaceChain * condition )
   {
-    if ( !CheckArgFunction( expre ) ) throw "Invalid Input Of ArcTan";
-
+    if ( !CheckArgFunction( expre ) )
+      {
+	expre -> detach();
+	throw "Invalid Input Of ArcTan";
+      }
+    Expression* result;
+    if ( FunList( expre , result , length , condition ) ) return result;
+    switch ( expre -> P(0) -> ExpType )
+      {
+      case Number:
+	{
+	  NumberType value = expre -> P(0) -> Value;
+	  result = make( PrimaryFunction::ArcTan( value , length ) );
+	  expre -> detach();
+	  return result;
+	}
+      case Diff:
+	{
+	  result = make( Diff , 2 );
+	  result -> P(0) = make( ArcTan , 1 );
+	  ( result -> P(0) -> P(0) = expre -> P(0) -> P(0) ) -> attach();
+	  result -> P(1) = make( Multiply , 2 );
+	  ( result -> P(1) -> P(0) = expre -> P(0) -> P(1) ) -> attach();
+	  result -> P(1) -> P(1) = make( Add , 2 );
+	  result -> P(1) -> Attach[1] = -1;
+	  result -> P(1) -> P(1) -> P(0) = make( NumberType::One );
+	  result -> P(1) -> P(1) -> P(1) = make( Power , 2 );
+	  result -> P(1) -> P(1) -> P(1) -> P(1) = make( 2 );
+	  (result -> P(1) -> P(1) -> P(1) -> P(0)=expre -> P(0) -> P(0))->attach();
+	  expre -> detach();
+	  result = Transform( result , length , condition );
+	  return result;
+	}
+      default:
+	break;
+      };
     return expre;
   };
   
   Expression * Expression::TrArcCot( Expression * expre , int length
 				     , ReplaceChain * condition )
   {
-    if ( !CheckArgFunction( expre ) ) throw "Invalid Input Of ArcCot";
-
+    if ( !CheckArgFunction( expre ) )
+      {
+	expre -> detach();
+	throw "Invalid Input Of ArcCot";
+      }
+    Expression* result;
+    if ( FunList( expre , result , length , condition ) ) return result;
+    switch ( expre -> P(0) -> ExpType )
+      {
+      case Number:
+	{
+	  NumberType value = expre -> P(0) -> Value;
+	  result = make( PrimaryFunction::ArcCot( value , length ) );
+	  expre -> detach();
+	  return result;
+	}
+      case Diff:
+	{
+	  result = make( Diff , 2 );
+	  result -> P(0) = make( ArcCot , 1 );
+	  ( result -> P(0) -> P(0) = expre -> P(0) -> P(0) ) -> attach();
+	  result -> P(1) = make( Multiply , 2 );
+	  ( result -> P(1) -> P(0) = expre -> P(0) -> P(1) ) -> attach();
+	  result -> P(1) -> P(1) = make( Add , 2 );
+	  result -> P(1) -> Attach[1] = -1;
+	  result -> P(1) -> P(1) -> P(0) = make( NumberType::One );
+	  result -> P(1) -> P(1) -> P(1) = make( Power , 2 );
+	  result -> P(1) -> P(1) -> P(1) -> P(1) = make( 2 );
+	  (result -> P(1) -> P(1) -> P(1) -> P(0)=expre -> P(0) -> P(0))->attach();
+	  expre -> detach();
+	  expre = result -> P(1);
+	  result -> P(1) = make( Add , 1 );
+	  result -> P(1) -> Attach[0] = -1;
+	  result -> P(1) -> P(0) = expre;
+	  result = Transform( result , length , condition );
+	  return result;
+	}
+      default:
+	break;
+      };
     return expre;
   };
   
   Expression * Expression::TrArcSec( Expression * expre , int length
 				     , ReplaceChain * condition )
   {
-    if ( !CheckArgFunction( expre ) ) throw "Invalid Input Of ArcSec";
-
+    if ( !CheckArgFunction( expre ) )
+      {
+	expre -> detach();
+	throw "Invalid Input Of ArcSec";
+      }
+    Expression* result;
+    if ( FunList( expre , result , length , condition ) ) return result;
+    switch ( expre -> P(0) -> ExpType )
+      {
+      case Number:
+	{
+	  NumberType value = expre -> P(0) -> Value;
+	  result = make( PrimaryFunction::ArcSec( value , length ) );
+	  expre -> detach();
+	  return result;
+	}
+      case Diff:
+	{
+	  result = make( Diff , 2 );
+	  result -> P(0) = make( ArcSec , 1 );
+	  ( result -> P(0) -> P(0) = expre -> P(0) -> P(0) ) -> attach();
+	  result -> P(1) = make( Multiply , 3 );
+	  ( result -> P(1) -> P(0) = expre -> P(0) -> P(1) ) -> attach();
+	  ( result -> P(1) -> P(1) = expre -> P(0) -> P(0) ) -> attach();
+	  result -> P(1) -> Attach[1] = result -> P(1) -> Attach[2] = -1;
+	  result -> P(1) -> P(2) = make( Power , 2 );
+	  result -> P(1) -> P(2) -> P(1) = make( NumberType(0.5) );
+	  result -> P(1) -> P(2) -> P(0) = make( Add , 2 );
+	  result -> P(1) -> P(2) -> P(0) -> P(0) = make( -NumberType::One );
+	  result -> P(1) -> P(2) -> P(0) -> P(1) = make( Power , 2 );
+	  result -> P(1) -> P(2) -> P(0) -> P(1) -> P(1) = make( 2 );
+	  (result->P(1)->P(2)->P(0)->P(1)->P(0)=expre->P(0)->P(0))->attach();
+	  expre -> detach();
+	  result = Transform( result , length , condition );
+	  return result;
+	}
+      default:
+	break;
+      };
     return expre;
   };
   
   Expression * Expression::TrArcCsc( Expression * expre , int length
 				     , ReplaceChain * condition )
   {
-    if ( !CheckArgFunction( expre ) ) throw "Invalid Input Of ArcCsc";
-
+    if ( !CheckArgFunction( expre ) )
+      {
+	expre -> detach();
+	throw "Invalid Input Of ArcCsc";
+      }
+    Expression* result;
+    if ( FunList( expre , result , length , condition ) ) return result;
+    switch ( expre -> P(0) -> ExpType )
+      {
+      case Number:
+	{
+	  NumberType value = expre -> P(0) -> Value;
+	  result = make( PrimaryFunction::ArcCsc( value , length ) );
+	  expre -> detach();
+	  return result;
+	}
+      case Diff:
+	{
+	  result = make( Diff , 2 );
+	  result -> P(0) = make( ArcCsc , 1 );
+	  ( result -> P(0) -> P(0) = expre -> P(0) -> P(0) ) -> attach();
+	  result -> P(1) = make( Multiply , 3 );
+	  ( result -> P(1) -> P(0) = expre -> P(0) -> P(1) ) -> attach();
+	  ( result -> P(1) -> P(1) = expre -> P(0) -> P(0) ) -> attach();
+	  result -> P(1) -> Attach[1] = result -> P(1) -> Attach[2] = -1;
+	  result -> P(1) -> P(2) = make( Power , 2 );
+	  result -> P(1) -> P(2) -> P(1) = make( NumberType(0.5) );
+	  result -> P(1) -> P(2) -> P(0) = make( Add , 2 );
+	  result -> P(1) -> P(2) -> P(0) -> P(0) = make( -NumberType::One );
+	  result -> P(1) -> P(2) -> P(0) -> P(1) = make( Power , 2 );
+	  result -> P(1) -> P(2) -> P(0) -> P(1) -> P(1) = make( 2 );
+	  (result->P(1)->P(2)->P(0)->P(1)->P(0)=expre->P(0)->P(0))->attach();
+	  expre -> detach();
+	  expre = result -> P(1);
+	  result -> P(1) = make( Add , 1 );
+	  result -> P(1) -> Attach[0] = -1;
+	  result -> P(1) -> P(0) = expre;
+	  result = Transform( result , length , condition );
+	  return result;
+	}
+      default:
+	break;
+      };
     return expre;
   };
   
-  Expression * Expression::TrN( Expression * expre , int length
-				, ReplaceChain * condition )
+  bool Expression::CheckArgN( Expression * expre )
   {
-    if ( !CheckArgFunction( expre ) ) throw "Invalid Input Of N";
-
-    return expre;
+    if ( expre -> NumOfPara == 1 ) return true;
+    if ( expre -> NumOfPara != 2 ) return false;
+    if ( expre -> P(1) -> ExpType != Number
+	 or expre -> P(1) -> Value.TypeOfNum() != NumberType::Int
+	 or expre -> P(1) -> Value <= 0 ) return false;
+    return true;
   };
-  
+
+  Expression * Expression::TrN( Expression* expre , int, ReplaceChain* condition )
+  {
+    if ( !CheckArgN( expre ) )
+      {
+	expre -> detach();
+	throw "Invalid Input Of N";
+      }
+    int length;
+    if ( expre -> NumOfPara == 1 )
+      length = 1;
+    else
+      length = expre -> P(1) -> Value.GetInt() / 9 + 1;
+    Expression* result = Transform( expre -> P(0) , length , condition );
+    if ( result -> ExpType != Number )
+      {
+	result -> detach();
+	throw "Error in N";
+      }
+    return result;
+  };
 
   Expression * Expression::Transform( Expression * expre , int length
 				      , ReplaceChain * condition )
   {
     expre = expre -> unalias();
+    if ( expre -> ExpType == N )
+      return TrN( expre , length , condition );
+    if ( expre -> ExpType == Power and expre -> P(0) -> ExpType == E )
+      {
+	expre -> P(1) = Transform( expre -> P(1) , length , condition );
+	if ( expre -> P(1) -> ExpType == Number )
+	  return TrPower( expre , length , condition );
+      }
+    if ( expre -> ExpType == Log and
+	 ( expre -> NumOfPara == 1 or expre -> P(1) -> ExpType == E ))
+      {
+	expre -> P(0) = Transform( expre -> P(0) , length , condition );	
+	if ( expre -> P(0) -> ExpType == Number )
+	  return TrLog( expre , length , condition );
+      }
     for ( int i = 0 ; i < expre -> NumOfPara ; i++ )
       expre -> P(i) = Transform( expre -> P(i) , length , condition );
     switch( expre -> ExpType )
       {
       case None:
+	expre -> detach();
 	throw "Invalid Expression";
       case Str:
 	return TrStr( expre , length , condition );
@@ -815,6 +1149,8 @@ namespace CAS
 	return TrC( expre , length , condition );
       case Power:
 	return TrPower( expre , length , condition );
+      case Log:
+	return TrLog( expre , length , condition );
       default:
 	break;
       };
