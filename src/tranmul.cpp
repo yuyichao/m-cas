@@ -179,11 +179,11 @@ namespace CAS
 		if ( expre -> GetAttach(j) == 1 )
 		  tmp = expre -> P(j) -> Value;
 		else
-		  tmp = expre -> P(j) -> Value.Inverse( length + 1 );
+		  tmp = expre -> P(j) -> Value.Inverse( length );
 		if ( expre -> GetAttach(i) == 1 )
 		  tmp = tmp * expre -> P(i) -> Value;
 		else
-		  tmp = NumberType::Divide( tmp , expre->P(i)->Value , length+1 );
+		  tmp = NumberType::Divide( tmp , expre->P(i)->Value , length );
 		result -> P(j) = make( tmp );
 		result -> Attach[j] = 1;
 		for ( int k = j + 1 ; k < i ; k++ )
