@@ -459,24 +459,4 @@ namespace CAS
     result = Transform( result , length1 , condition );
     return true;
   };
-
-  Expression * Expression::TrAdd( Expression * expre , int length
-				  , ReplaceChain * condition )
-  {
-    if ( !CheckArgNormal( expre ) ) throw "Invalid Input For Add";
-    Expression * result;
-    if ( OneAdd( expre , result , length , condition ) ) return result;
-    if ( expre -> Attach != NULL )
-      SortUp( expre -> Parameter , expre -> Attach , expre -> NumOfPara );
-    else
-      SortUp( expre -> Parameter , expre -> NumOfPara );
-    if ( AddZero( expre , result , length , condition ) ) return result;
-    if ( AddAdd( expre , result , length , condition ) ) return result;
-    if ( AddNumber( expre , result , length , condition ) ) return result;
-    if ( AddSim( expre , result , length , condition ) ) return result;
-    if ( AddSign( expre , result , length , condition ) ) return result;
-    if ( AddDiff( expre , result , length , condition ) ) return result;
-    if ( AddList( expre , result , length , condition ) ) return result;
-    return expre;
-  };
 }

@@ -184,20 +184,4 @@ namespace CAS
     
     return false;
   };
-  
-  Expression * Expression::TrPower( Expression * expre , int length
-				    , ReplaceChain * condition )
-  {
-    if ( !CheckArgTwo( expre ) ) throw "Invalid Input For Power";
-    Expression * result;
-    if ( PowSign( expre , result , length , condition ) ) return result;
-    if ( PowZero( expre , result , length , condition ) ) return result;
-    if ( PowNumber( expre , result , length , condition ) ) return result;
-    if ( PowPow( expre , result , length , condition ) ) return result;
-    if ( PowList( expre , result , length , condition ) ) return result;
-    if ( PowDiff( expre , result , length , condition ) ) return result;
-    if ( PowLog( expre , result , length , condition ) ) return result;
-    if ( PowOne( expre , result , length , condition ) ) return result;
-    return expre;
-  };
 }

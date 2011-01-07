@@ -252,6 +252,65 @@ namespace CAS
     return true;
   };
 
+  Expression * Expression::TrAdd( Expression * expre , int length
+				  , ReplaceChain * condition )
+  {
+    if ( !CheckArgNormal( expre ) ) throw "Invalid Input For Add";
+    Expression * result;
+    if ( OneAdd( expre , result , length , condition ) ) return result;
+    if ( expre -> Attach != NULL )
+      SortUp( expre -> Parameter , expre -> Attach , expre -> NumOfPara );
+    else
+      SortUp( expre -> Parameter , expre -> NumOfPara );
+    if ( AddZero( expre , result , length , condition ) ) return result;
+    if ( AddAdd( expre , result , length , condition ) ) return result;
+    if ( AddNumber( expre , result , length , condition ) ) return result;
+    if ( AddSim( expre , result , length , condition ) ) return result;
+    if ( AddSign( expre , result , length , condition ) ) return result;
+    if ( AddDiff( expre , result , length , condition ) ) return result;
+    if ( AddList( expre , result , length , condition ) ) return result;
+    return expre;
+  };
+  
+  Expression * Expression::TrMultiply( Expression * expre , int length
+				       , ReplaceChain * condition )
+  {
+    if ( !CheckArgNormal( expre ) ) throw "Invalid Input For Multiply";
+    Expression * result;
+    if ( OneMul( expre , result , length , condition ) ) return result;
+    if ( expre -> Attach != NULL )
+      SortUp( expre -> Parameter , expre -> Attach , expre -> NumOfPara );
+    else
+      SortUp( expre -> Parameter , expre -> NumOfPara );
+    if ( MulZero( expre , result , length , condition ) ) return result;
+    if ( MulOne( expre , result , length , condition ) ) return result;
+    if ( MulNumber( expre , result , length , condition ) ) return result;
+    if ( MulMul( expre , result , length , condition ) ) return result;
+    if ( MulList( expre , result , length , condition ) ) return result;
+    if ( MulDiff( expre , result , length , condition ) ) return result;
+    if ( MulSim( expre , result , length , condition ) ) return result;
+    if ( MulSign( expre , result , length , condition ) ) return result;
+    if ( MulSigna( expre , result , length , condition ) ) return result;
+    if ( MulTri( expre , result , length , condition ) ) return result;    
+    return expre;
+  };
+  
+  Expression * Expression::TrPower( Expression * expre , int length
+				    , ReplaceChain * condition )
+  {
+    if ( !CheckArgTwo( expre ) ) throw "Invalid Input For Power";
+    Expression * result;
+    if ( PowSign( expre , result , length , condition ) ) return result;
+    if ( PowZero( expre , result , length , condition ) ) return result;
+    if ( PowNumber( expre , result , length , condition ) ) return result;
+    if ( PowPow( expre , result , length , condition ) ) return result;
+    if ( PowList( expre , result , length , condition ) ) return result;
+    if ( PowDiff( expre , result , length , condition ) ) return result;
+    if ( PowLog( expre , result , length , condition ) ) return result;
+    if ( PowOne( expre , result , length , condition ) ) return result;
+    return expre;
+  };
+
   bool Expression::CheckArgFunction( Expression * expre )
   {
     if ( expre -> NumOfPara != 1 ) return false;
