@@ -261,6 +261,7 @@ namespace CAS
     static NumberType InverseSqrt( const NumberType & value , int length = 0 );
     static NumberType Sqrt( const NumberType & value , int length = 0 );
     static bool ReadReal( string str , NumberType & result );
+    inline int GetInt() const{ return Number.IntNumber; };
   protected :
     
   private :

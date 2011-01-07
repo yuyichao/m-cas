@@ -1,4 +1,3 @@
-// -*- C++ -*-
 /*************************************************************************
  *                                                                       *
  *  Copyright 2010, 2011 Yu Yichao, Yang Dong                            *
@@ -22,33 +21,61 @@
  *                                                                       *
  *************************************************************************/
 
-#ifndef _ALL_H
-#define _ALL_H
+#include "all.h"
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <cmath>
-#include <sstream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <float.h>
-#include <complex>
+namespace CAS
+{
+  bool Expression::LogSign( Expression* expre , Expression*& result, int length , ReplaceChain * condition )
+  {
 
-#define UInt64 unsigned long long
-#define UInt32 unsigned int
-#define Int64 long long
-#define Int32 int
+    return false;
+  };
+  
+  bool Expression::LogNumber( Expression* expre , Expression*& result, int length , ReplaceChain* )
+  {
 
-using namespace std;
+    return false;
+  };
+  
+  bool Expression::LogPow( Expression* expre , Expression*& result, int length , ReplaceChain * condition )
+  {
 
-//{_}include_head
+    return false;
+  };
+  
+  bool Expression::LogList( Expression* expre , Expression*& result, int length , ReplaceChain * condition )
+  {
 
-#include "numbertype.h"
-#include "expression.h"
-#include "primary.h"
-#include "main.h"
-//{*}include_head
+    return false;
+  };
+  
+  bool Expression::LogOne( Expression* expre , Expression*& result, int length , ReplaceChain * condition )
+  {
 
+    return false;
+  };
+  
+  bool Expression::LogSame( Expression* expre , Expression*& result, int length , ReplaceChain * condition )
+  {
+    if (( expre -> NumOfPara == 1 and expre -> P(0) -> ExpType == E )
+	or ( expre -> NumOfPara == 2 and *(expre -> P(0)) == *(expre -> P(1))))
+      {
+	result = make( NumberType::One );
+	expre -> detach();
+	return true;
+      }
+    return false;
+  };
+  
+  bool Expression::LogDiff( Expression* expre , Expression*& result, int length , ReplaceChain * condition )
+  {
 
-#endif
+    return false;
+  };
+  
+  bool Expression::LogLog( Expression* expre , Expression*& result, int length , ReplaceChain * condition )
+  {
+
+    return false;
+  };
+}

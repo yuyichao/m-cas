@@ -13,12 +13,12 @@ INCLUDE_FLAGS =  -I./number.so -I./number.so/include -I./include
 ORG_LIB_FLAGS = 
 LIB_FLAGS =  -lnumber $(ORG_LIB_FLAGS)
 LIB_PATH = -L/usr/lib -Lbin/./number.so
-olist = $(outpath)/./src/replace.o $(outpath)/./src/readexp.o $(outpath)/./src/tranmul.o $(outpath)/./src/tranpow.o $(outpath)/./src/primary.o $(outpath)/./src/expression.o $(outpath)/./src/main.o $(outpath)/./src/tranadd.o $(outpath)/./src/exptostr.o $(outpath)/./src/compprimary.o $(outpath)/./src/realprimary.o $(outpath)/./src/exptrans.o       
+olist = $(outpath)/./src/replace.o $(outpath)/./src/readexp.o $(outpath)/./src/tranmul.o $(outpath)/./src/tranpow.o $(outpath)/./src/primary.o $(outpath)/./src/tranlog.o $(outpath)/./src/expression.o $(outpath)/./src/main.o $(outpath)/./src/tranadd.o $(outpath)/./src/exptostr.o $(outpath)/./src/compprimary.o $(outpath)/./src/realprimary.o $(outpath)/./src/exptrans.o       
 sofilelistc =  bin/./number.so/libnumber.so
 FLAGS = -W -Wall
 SO_FLAGS = -shared -fPIC
 DEBUG_FLAGS = -g -D_DEBUG_
-debug_o_list =  $(outpath)/./src/replace_debug.o $(outpath)/./src/readexp_debug.o $(outpath)/./src/tranmul_debug.o $(outpath)/./src/tranpow_debug.o $(outpath)/./src/primary_debug.o $(outpath)/./src/expression_debug.o $(outpath)/./src/main_debug.o $(outpath)/./src/tranadd_debug.o $(outpath)/./src/exptostr_debug.o $(outpath)/./src/compprimary_debug.o $(outpath)/./src/realprimary_debug.o $(outpath)/./src/exptrans_debug.o
+debug_o_list =  $(outpath)/./src/replace_debug.o $(outpath)/./src/readexp_debug.o $(outpath)/./src/tranmul_debug.o $(outpath)/./src/tranpow_debug.o $(outpath)/./src/primary_debug.o $(outpath)/./src/tranlog_debug.o $(outpath)/./src/expression_debug.o $(outpath)/./src/main_debug.o $(outpath)/./src/tranadd_debug.o $(outpath)/./src/exptostr_debug.o $(outpath)/./src/compprimary_debug.o $(outpath)/./src/realprimary_debug.o $(outpath)/./src/exptrans_debug.o
 debug_so_list =  bin/./number.so/libnumber_debug.so
 target_debug = m-cas_debug
 DEBUGER = gdb
@@ -45,53 +45,57 @@ $(outpath)/./number.so/src :
 	mkdir -p $(outpath)/./number.so/src
 $(outpath)/./src :
 	mkdir -p $(outpath)/./src
-$(outpath)/./src/replace.o:  src/replace.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/replace.o:  src/replace.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(OPT_FLAGS) $(FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/replace.o ./src/replace.cpp
-$(outpath)/./src/replace_debug.o:  src/replace.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/replace_debug.o:  src/replace.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(FLAGS) $(DEBUG_FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/replace_debug.o ./src/replace.cpp
-$(outpath)/./src/readexp.o:  src/readexp.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/readexp.o:  src/readexp.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(OPT_FLAGS) $(FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/readexp.o ./src/readexp.cpp
-$(outpath)/./src/readexp_debug.o:  src/readexp.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/readexp_debug.o:  src/readexp.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(FLAGS) $(DEBUG_FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/readexp_debug.o ./src/readexp.cpp
-$(outpath)/./src/tranmul.o:  src/tranmul.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/tranmul.o:  src/tranmul.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(OPT_FLAGS) $(FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/tranmul.o ./src/tranmul.cpp
-$(outpath)/./src/tranmul_debug.o:  src/tranmul.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/tranmul_debug.o:  src/tranmul.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(FLAGS) $(DEBUG_FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/tranmul_debug.o ./src/tranmul.cpp
-$(outpath)/./src/tranpow.o:  src/tranpow.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/tranpow.o:  src/tranpow.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(OPT_FLAGS) $(FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/tranpow.o ./src/tranpow.cpp
-$(outpath)/./src/tranpow_debug.o:  src/tranpow.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/tranpow_debug.o:  src/tranpow.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(FLAGS) $(DEBUG_FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/tranpow_debug.o ./src/tranpow.cpp
-$(outpath)/./src/primary.o:  src/primary.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/primary.o:  src/primary.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(OPT_FLAGS) $(FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/primary.o ./src/primary.cpp
-$(outpath)/./src/primary_debug.o:  src/primary.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/primary_debug.o:  src/primary.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(FLAGS) $(DEBUG_FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/primary_debug.o ./src/primary.cpp
-$(outpath)/./src/expression.o:  src/expression.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/tranlog.o:  src/tranlog.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
+	$(CXX) $(OPT_FLAGS) $(FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/tranlog.o ./src/tranlog.cpp
+$(outpath)/./src/tranlog_debug.o:  src/tranlog.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
+	$(CXX) $(FLAGS) $(DEBUG_FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/tranlog_debug.o ./src/tranlog.cpp
+$(outpath)/./src/expression.o:  src/expression.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(OPT_FLAGS) $(FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/expression.o ./src/expression.cpp
-$(outpath)/./src/expression_debug.o:  src/expression.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/expression_debug.o:  src/expression.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(FLAGS) $(DEBUG_FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/expression_debug.o ./src/expression.cpp
-$(outpath)/./src/main.o:  src/main.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/main.o:  src/main.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(OPT_FLAGS) $(FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/main.o ./src/main.cpp
-$(outpath)/./src/main_debug.o:  src/main.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/main_debug.o:  src/main.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(FLAGS) $(DEBUG_FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/main_debug.o ./src/main.cpp
-$(outpath)/./src/tranadd.o:  src/tranadd.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/tranadd.o:  src/tranadd.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(OPT_FLAGS) $(FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/tranadd.o ./src/tranadd.cpp
-$(outpath)/./src/tranadd_debug.o:  src/tranadd.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/tranadd_debug.o:  src/tranadd.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(FLAGS) $(DEBUG_FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/tranadd_debug.o ./src/tranadd.cpp
-$(outpath)/./src/exptostr.o:  src/exptostr.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/exptostr.o:  src/exptostr.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(OPT_FLAGS) $(FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/exptostr.o ./src/exptostr.cpp
-$(outpath)/./src/exptostr_debug.o:  src/exptostr.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/exptostr_debug.o:  src/exptostr.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(FLAGS) $(DEBUG_FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/exptostr_debug.o ./src/exptostr.cpp
-$(outpath)/./src/compprimary.o:  src/compprimary.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/compprimary.o:  src/compprimary.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(OPT_FLAGS) $(FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/compprimary.o ./src/compprimary.cpp
-$(outpath)/./src/compprimary_debug.o:  src/compprimary.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/compprimary_debug.o:  src/compprimary.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(FLAGS) $(DEBUG_FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/compprimary_debug.o ./src/compprimary.cpp
-$(outpath)/./src/realprimary.o:  src/realprimary.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/realprimary.o:  src/realprimary.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(OPT_FLAGS) $(FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/realprimary.o ./src/realprimary.cpp
-$(outpath)/./src/realprimary_debug.o:  src/realprimary.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/realprimary_debug.o:  src/realprimary.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(FLAGS) $(DEBUG_FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/realprimary_debug.o ./src/realprimary.cpp
-$(outpath)/./src/exptrans.o:  src/exptrans.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/exptrans.o:  src/exptrans.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(OPT_FLAGS) $(FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/exptrans.o ./src/exptrans.cpp
-$(outpath)/./src/exptrans_debug.o:  src/exptrans.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+$(outpath)/./src/exptrans_debug.o:  src/exptrans.cpp include/all.h number.so/include/numbertype.h include/expression.h include/primary.h include/main.h
 	$(CXX) $(FLAGS) $(DEBUG_FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/exptrans_debug.o ./src/exptrans.cpp
 bin/./number.so/libnumber.so : ./number.so/Makefile  ./number.so/libnumber.h ./number.so/include/number.so.h ./number.so/include/basic.h ./number.so/include/numbertype.h  ./number.so/src/numbertype.cpp ./number.so/src/complexha.cpp ./number.so/src/dataarray.cpp ./number.so/src/basic.cpp ./number.so/src/highaccuracynumber.cpp 
 	cd ./number.so && $(MAKER)

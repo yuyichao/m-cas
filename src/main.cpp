@@ -61,15 +61,17 @@ void Debug()
 namespace CAS
 {
   string name = "m-cas";
-  int version[4] = {0,0,1,2};
+  int version[4] = {0,0,1,3};
   vector<Expression*> In , Out;
   int countIn = 1;
   void Initial()
   {
-    cout << name << version[0] << "."
+    cout << name << " "
+	 << version[0] << "."
 	 << version[1] << "."
 	 << version[2] << "-"
 	 << version[3] << endl;
+    cout << "Copyright (C) 2010, 2011 Yu Yichao, Yang Dong" << endl;
   }
   
   int Console()

@@ -80,7 +80,16 @@ namespace CAS
 	      Expression ** para = new Expression*[2];
 	      para[0] = make( str.substr( 0 , i ) );
 	      para[1] = Construct( str.substr( i + 1 , str.length() - i - 1 ) );
-	      para[1] = Transform( para[1] );
+	      try
+		{
+		  para[1] = Transform( para[1] );
+		}
+	      catch(...)
+		{
+		  para[0] -> detach();
+		  delete []para;
+		  throw;
+		}
 	      result = make( Set , para , 2 , NULL );
 	      para[0] -> detach();
 	      para[1] -> detach();

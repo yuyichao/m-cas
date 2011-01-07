@@ -35,7 +35,7 @@ namespace CAS
 	result -> Attach[0] = 1;
 	for ( int i = 0 ; i < result -> P(1) -> NumOfPara ; i++ )
 	  result -> P(1) -> Attach[i] = -result -> P(1) -> Attach[i];
-	result = Transform( expre , length , condition );
+	result = Transform( result , length , condition );
 	return true;
       }
     if ( expre -> P(1) -> ExpType == Add and expre -> P(1) -> NumOfPara == 1
@@ -49,7 +49,7 @@ namespace CAS
 	  }
 	result -> Attach[0] = -result -> Attach[0];
 	result -> P(1) -> Attach[0] = 1;
-	result = Transform( expre , length , condition );
+	result = Transform( result , length , condition );
 	return true;
       }
     if ( expre -> P(1) -> ExpType == Number
@@ -93,8 +93,8 @@ namespace CAS
 	    result -> P(1) -> Attach = new int[ expre -> P(1) -> NumOfPara ];
 	  }
 	else
-	    for ( int i = 0 ; i < expre -> P(1) -> NumOfPara ; i++ )
-	      result -> P(1) -> Attach[i] = -result -> P(1) -> Attach[i];
+	  for ( int i = 0 ; i < expre -> P(1) -> NumOfPara ; i++ )
+	    result -> P(1) -> Attach[i] = -result -> P(1) -> Attach[i];
 	result = Transform( result , length , condition );
 	return true;
       }
@@ -102,7 +102,7 @@ namespace CAS
   };
   
   bool Expression::PowNumber( Expression * expre , Expression *&result , int length
-			      , ReplaceChain * condition )
+			      , ReplaceChain* condition )
   {
     if (expre -> P(0) -> ExpType == Number and expre -> P(1) -> ExpType == Number)
       {
@@ -146,6 +146,16 @@ namespace CAS
 	result = make( value );
 	return true;
       }
+    if ( expre -> P(1) -> ExpType == Number and expre -> GetAttach(1) == -1 )
+      {
+	result = make( Power , 2 );
+	( result -> P(0) = expre -> P(0) ) -> attach();
+	result -> Attach[0] = expre -> Attach[0];
+	result -> P(1) = make( expre -> P(1) -> Value.Inverse( length ) );
+	expre -> detach();
+	result = Transform( result , length , condition );
+	return true;
+      }
     return false;
   };
   
@@ -166,14 +176,35 @@ namespace CAS
   bool Expression::PowOne( Expression * expre , Expression *&result , int length
 			   , ReplaceChain * condition )
   {
-
+    if ( expre -> P(1) -> ExpType == Number and expre -> P(1) -> Value == 1 )
+      {
+	if ( expre -> GetAttach(0) == 1 )
+	  ( result = expre -> P(0) ) -> attach();
+	else
+	  {
+	    result = make( Multiply , 1 );
+	    result -> Attach[0] = -1;
+	    ( result -> P(0) = expre -> P(0) ) -> attach();
+	  }
+	expre -> detach();
+	result = Transform( result , length , condition );
+	return true;
+      }
     return false;
   };
   
-  bool Expression::PowZero( Expression * expre , Expression *&result , int length
-			    , ReplaceChain * condition )
+  bool Expression::PowZero( Expression* expre , Expression*& result
+			    ,int,ReplaceChain*)
   {
-
+    if ( expre -> P(1) -> ExpType == Number and expre -> P(1) -> Value.IsZero() )
+      {
+	if ( expre -> GetAttach(1) == 1 )
+	  result = make( NumberType::One );
+	else
+	  result = make( NumberType::RealInfinity );
+	expre -> detach();
+	return true;
+      }
     return false;
   };
   
@@ -213,6 +244,36 @@ namespace CAS
 	    result -> P(1) -> P(2) -> P(1) -> P(0) -> Attach[0] = -1;
 	  }
 	expre -> detach();
+	result = Transform( result , length , condition );
+	return true;
+      }
+    if ( expre -> P(1) -> ExpType == Diff )
+      {
+	result = make( Diff , 2 );
+	if ( expre -> GetAttach(1) == -1 )
+	  {
+	    result -> P(1) = make( Multiply , 4 );
+	    result -> P(1) -> P(3) = make( Power , 2 );
+	    result -> P(1) -> P(3) -> P(1) = make( NumberType(-2) );
+	  }
+	else
+	  result -> P(1) = make( Multiply , 3 );
+	( result -> P(1) -> P(0) = expre -> P(1) -> P(1) ) -> attach();
+	result -> P(1) -> P(1) = make( Log , 1 );
+	( result -> P(1) -> P(1) -> P(0) = expre -> P(0) ) -> attach();
+	result -> P(1) -> P(2) = make( Power , 2 );
+	( result -> P(1) -> P(2) -> P(0) = expre -> P(0) ) -> attach();
+	( result -> P(1) -> P(2) -> P(1) = expre -> P(1) -> P(0) ) -> attach();
+	result -> P(1) -> P(2) -> Attach[0] = expre -> GetAttach(0);
+	result -> P(1) -> P(2) -> Attach[1] = expre -> GetAttach(1);
+	( result -> P(0) = result -> P(1) -> P(2) ) -> attach();
+	if ( expre -> GetAttach(0) * expre -> GetAttach(1) == -1 )
+	  {
+	    Expression *tmp = result -> P(1);
+	    result -> P(1) = make( Add , 1 );
+	    result -> P(1) -> Attach[0] = -1;
+	    result -> P(1) -> P(0) = tmp;
+	  }
 	result = Transform( result , length , condition );
 	return true;
       }
