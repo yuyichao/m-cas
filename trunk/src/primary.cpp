@@ -139,7 +139,7 @@ namespace CAS
 	return Exp( *(value.Number.HAComplex) , length );
       };
     return NumberType();
-  };
+  }
 
   NumberType PrimaryFunction::Ln( const NumberType & , int )
   {
