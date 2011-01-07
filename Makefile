@@ -1,6 +1,6 @@
 ########################################################
 #
-#Created By YYC Makefile Creator 0.7.9
+#Created By YYC Makefile Creator 0.7.10
 #
 ########################################################
 CXX = g++ -c -fPIC
@@ -81,7 +81,7 @@ bin/./number.so/libnumber_debug.so : ./number.so/Makefile  ./number.so/libnumber
 cleanold :
 	rm `find -name "*~"` 2> /dev/null || true
 clean : cleanold cleano cleanmoc cleanso cleantarget cleandebug
-	for pathname in `find -depth -type d` ; do if [ "`ls -A1 $${pathname} | wc -l`" = "0" ] ; then rmdir $${pathname} ; fi ; done
+	for pathname in `find . -depth \( ! -regex '.*/\..*' \) -type d` ; do if [ "`ls -A1 $${pathname} | wc -l`" = "0" ] ; then rmdir $${pathname} ; fi ; done
 cleanmoc :
 	rm $(moclist) 2> /dev/null || true
 cleano :
