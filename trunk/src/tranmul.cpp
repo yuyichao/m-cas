@@ -991,27 +991,4 @@ namespace CAS
       }
     return false;
   };
-  
-  Expression * Expression::TrMultiply( Expression * expre , int length
-				       , ReplaceChain * condition )
-  {
-    if ( !CheckArgNormal( expre ) ) throw "Invalid Input For Multiply";
-    Expression * result;
-    if ( OneMul( expre , result , length , condition ) ) return result;
-    if ( expre -> Attach != NULL )
-      SortUp( expre -> Parameter , expre -> Attach , expre -> NumOfPara );
-    else
-      SortUp( expre -> Parameter , expre -> NumOfPara );
-    if ( MulZero( expre , result , length , condition ) ) return result;
-    if ( MulOne( expre , result , length , condition ) ) return result;
-    if ( MulNumber( expre , result , length , condition ) ) return result;
-    if ( MulMul( expre , result , length , condition ) ) return result;
-    if ( MulList( expre , result , length , condition ) ) return result;
-    if ( MulDiff( expre , result , length , condition ) ) return result;
-    if ( MulSim( expre , result , length , condition ) ) return result;
-    if ( MulSign( expre , result , length , condition ) ) return result;
-    if ( MulSigna( expre , result , length , condition ) ) return result;
-    if ( MulTri( expre , result , length , condition ) ) return result;    
-    return expre;
-  };
 }
