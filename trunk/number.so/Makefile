@@ -1,6 +1,6 @@
 ########################################################
 #
-#Created By YYC Makefile Creator 0.7.10
+#Created By YYC Makefile Creator 0.8.1
 #
 ########################################################
 CXX = g++ -c -fPIC
@@ -17,7 +17,7 @@ olist = $(outpath)/./src/numbertype.o $(outpath)/./src/complexha.o $(outpath)/./
 sofilelistc = 
 FLAGS = -W -Wall
 SO_FLAGS = -shared -fPIC
-DEBUG_FLAGS = -g -D_DEBUG_ -UQT_NO_DEBUG
+DEBUG_FLAGS = -g -D_DEBUG_
 debug_o_list =  $(outpath)/./src/numbertype_debug.o $(outpath)/./src/complexha_debug.o $(outpath)/./src/dataarray_debug.o $(outpath)/./src/basic_debug.o $(outpath)/./src/highaccuracynumber_debug.o
 debug_so_list = 
 target_debug = libnumber_debug.so
