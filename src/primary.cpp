@@ -44,7 +44,7 @@ namespace CAS
 	return Arg( *value.Number.HAComplex , length );
       };
     return NumberType::NaN;
-  };
+  }
   
   NumberType PrimaryFunction::Sin( const NumberType & , int )
   {
