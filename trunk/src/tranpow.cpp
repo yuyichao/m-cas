@@ -104,7 +104,48 @@ namespace CAS
   bool Expression::PowNumber( Expression * expre , Expression *&result , int length
 			      , ReplaceChain * condition )
   {
-    
+    if (expre -> P(0) -> ExpType == Number and expre -> P(1) -> ExpType == Number)
+      {
+	NumberType value;
+	if ( expre -> GetAttach(0) == 1 )
+	  if ( expre -> GetAttach(1) == 1 )
+	    value = PrimaryFunction::Power(expre -> P(0) -> Value
+					   , expre->P(1)->Value , length + 1);
+	  else
+	    value = PrimaryFunction::Power(expre -> P(0) -> Value
+					   , expre->P(1)->Value.Inverse(length + 1)
+					   , length + 1);
+	else
+	  if ( expre -> GetAttach(1) == 1 )
+	    value = PrimaryFunction::Power(expre -> P(0) -> Value
+					   , -expre->P(1)->Value , length + 1);
+	  else
+	    value = PrimaryFunction::Power(expre -> P(0) -> Value
+					   , -expre->P(1)->Value.Inverse(length+1)
+					   , length + 1);
+	expre -> detach();
+	result = make( value );
+	return true;
+      }
+    if (expre -> P(0) -> ExpType == E and expre -> P(1) -> ExpType == Number)
+      {
+	NumberType value;
+	if ( expre -> GetAttach(0) == 1 )
+	  if ( expre -> GetAttach(1) == 1 )
+	    value = PrimaryFunction::Exp( expre->P(1)->Value , length + 1);
+	  else
+	    value = PrimaryFunction::Exp( expre->P(1)->Value.Inverse(length + 1)
+					   , length + 1);
+	else
+	  if ( expre -> GetAttach(1) == 1 )
+	    value = PrimaryFunction::Exp( -expre->P(1)->Value , length + 1);
+	  else
+	    value = PrimaryFunction::Exp( -expre->P(1)->Value.Inverse(length+1)
+					   , length + 1);
+	expre -> detach();
+	result = make( value );
+	return true;
+      }
     return false;
   };
   

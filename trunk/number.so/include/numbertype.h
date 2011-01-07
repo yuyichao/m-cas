@@ -223,7 +223,7 @@ namespace CAS
     NumberType( const ComplexHA & value );
     NumberType( const HighAccuracyNumber & value );
     NumberType( const NumberType & value );
-    inline TypeOfNumber TypeOfNum() { return NumType; };
+    inline TypeOfNumber TypeOfNum() const{ return NumType; };
     NumberType operator - () const;
     NumberType operator + ( const NumberType & value ) const;
     NumberType operator - ( const NumberType & value ) const;

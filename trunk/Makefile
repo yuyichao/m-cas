@@ -13,12 +13,12 @@ INCLUDE_FLAGS =  -I./number.so -I./number.so/include -I./include
 ORG_LIB_FLAGS = 
 LIB_FLAGS =  -lnumber $(ORG_LIB_FLAGS)
 LIB_PATH = -L/usr/lib -Lbin/./number.so
-olist = $(outpath)/./src/replace.o $(outpath)/./src/readexp.o $(outpath)/./src/tranmul.o $(outpath)/./src/tranpow.o $(outpath)/./src/primary.o $(outpath)/./src/expression.o $(outpath)/./src/main.o $(outpath)/./src/tranadd.o $(outpath)/./src/exptostr.o $(outpath)/./src/exptrans.o       
+olist = $(outpath)/./src/replace.o $(outpath)/./src/readexp.o $(outpath)/./src/tranmul.o $(outpath)/./src/tranpow.o $(outpath)/./src/primary.o $(outpath)/./src/expression.o $(outpath)/./src/main.o $(outpath)/./src/tranadd.o $(outpath)/./src/exptostr.o $(outpath)/./src/compprimary.o $(outpath)/./src/realprimary.o $(outpath)/./src/exptrans.o       
 sofilelistc =  bin/./number.so/libnumber.so
 FLAGS = -W -Wall
 SO_FLAGS = -shared -fPIC
 DEBUG_FLAGS = -g -D_DEBUG_
-debug_o_list =  $(outpath)/./src/replace_debug.o $(outpath)/./src/readexp_debug.o $(outpath)/./src/tranmul_debug.o $(outpath)/./src/tranpow_debug.o $(outpath)/./src/primary_debug.o $(outpath)/./src/expression_debug.o $(outpath)/./src/main_debug.o $(outpath)/./src/tranadd_debug.o $(outpath)/./src/exptostr_debug.o $(outpath)/./src/exptrans_debug.o
+debug_o_list =  $(outpath)/./src/replace_debug.o $(outpath)/./src/readexp_debug.o $(outpath)/./src/tranmul_debug.o $(outpath)/./src/tranpow_debug.o $(outpath)/./src/primary_debug.o $(outpath)/./src/expression_debug.o $(outpath)/./src/main_debug.o $(outpath)/./src/tranadd_debug.o $(outpath)/./src/exptostr_debug.o $(outpath)/./src/compprimary_debug.o $(outpath)/./src/realprimary_debug.o $(outpath)/./src/exptrans_debug.o
 debug_so_list =  bin/./number.so/libnumber_debug.so
 target_debug = m-cas_debug
 DEBUGER = gdb
@@ -81,6 +81,14 @@ $(outpath)/./src/exptostr.o:  src/exptostr.cpp include/all.h number.so/include/n
 	$(CXX) $(OPT_FLAGS) $(FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/exptostr.o ./src/exptostr.cpp
 $(outpath)/./src/exptostr_debug.o:  src/exptostr.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
 	$(CXX) $(FLAGS) $(DEBUG_FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/exptostr_debug.o ./src/exptostr.cpp
+$(outpath)/./src/compprimary.o:  src/compprimary.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+	$(CXX) $(OPT_FLAGS) $(FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/compprimary.o ./src/compprimary.cpp
+$(outpath)/./src/compprimary_debug.o:  src/compprimary.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+	$(CXX) $(FLAGS) $(DEBUG_FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/compprimary_debug.o ./src/compprimary.cpp
+$(outpath)/./src/realprimary.o:  src/realprimary.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+	$(CXX) $(OPT_FLAGS) $(FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/realprimary.o ./src/realprimary.cpp
+$(outpath)/./src/realprimary_debug.o:  src/realprimary.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
+	$(CXX) $(FLAGS) $(DEBUG_FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/realprimary_debug.o ./src/realprimary.cpp
 $(outpath)/./src/exptrans.o:  src/exptrans.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
 	$(CXX) $(OPT_FLAGS) $(FLAGS) $(INCLUDE_FLAGS) -o $(outpath)/./src/exptrans.o ./src/exptrans.cpp
 $(outpath)/./src/exptrans_debug.o:  src/exptrans.cpp include/all.h number.so/include/numbertype.h include/expression.h include/all.h include/primary.h include/main.h
