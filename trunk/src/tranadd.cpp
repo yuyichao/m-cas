@@ -89,7 +89,7 @@ namespace CAS
 		tmp1 = new Expression*[1];
 		tmp1[0] = expre -> P(j);
 		loftmp = 1;
-		if ( expre -> GetAttach( i ) == expre -> GetAttach( j ) )
+		if ( expre -> GetAttach(i) == expre -> GetAttach(j) )
 		  a = 2;
 		else
 		  a = 0;
@@ -442,17 +442,17 @@ namespace CAS
 	    if ( expre -> P(j) -> ExpType != List )
 	      {
 		( result -> P(i) -> P(j) = expre -> P(j) ) -> attach();
-		result -> P(i) -> Attach[j] = expre -> GetAttach( j );
+		result -> P(i) -> Attach[j] = expre -> GetAttach(j);
 		continue;
 	      }
 	    if ( expre -> P(j) -> NumOfPara == 1 )
 	      {
 		( result -> P(i) -> P(j) = expre -> P(j) -> P(0) ) -> attach();
-		result -> P(i) -> Attach[j] = expre -> GetAttach( j );
+		result -> P(i) -> Attach[j] = expre -> GetAttach(j);
 		continue;
 	      }
 	    ( result -> P(i) -> P(j) = expre -> P(j) -> P(i) ) -> attach();
-	    result -> P(i) -> Attach[j] = expre -> GetAttach( j );
+	    result -> P(i) -> Attach[j] = expre -> GetAttach(j);
 	  }
       }
     expre -> detach();

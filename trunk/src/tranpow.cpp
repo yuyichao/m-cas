@@ -110,18 +110,18 @@ namespace CAS
 	if ( expre -> GetAttach(0) == 1 )
 	  if ( expre -> GetAttach(1) == 1 )
 	    value = PrimaryFunction::Power(expre -> P(0) -> Value
-					   , expre->P(1)->Value , length + 1);
+					   , expre->P(1)->Value , length);
 	  else
 	    value = PrimaryFunction::Power(expre -> P(0) -> Value
-					   , expre->P(1)->Value.Inverse(length + 1)
+					   , expre->P(1)->Value.Inverse(length)
 					   , length + 1);
 	else
 	  if ( expre -> GetAttach(1) == 1 )
 	    value = PrimaryFunction::Power(expre -> P(0) -> Value
-					   , -expre->P(1)->Value , length + 1);
+					   , -expre->P(1)->Value , length);
 	  else
 	    value = PrimaryFunction::Power(expre -> P(0) -> Value
-					   , -expre->P(1)->Value.Inverse(length+1)
+					   , -expre->P(1)->Value.Inverse(length)
 					   , length + 1);
 	expre -> detach();
 	result = make( value );
@@ -132,16 +132,16 @@ namespace CAS
 	NumberType value;
 	if ( expre -> GetAttach(0) == 1 )
 	  if ( expre -> GetAttach(1) == 1 )
-	    value = PrimaryFunction::Exp( expre->P(1)->Value , length + 1);
+	    value = PrimaryFunction::Exp( expre->P(1)->Value , length);
 	  else
-	    value = PrimaryFunction::Exp( expre->P(1)->Value.Inverse(length + 1)
+	    value = PrimaryFunction::Exp( expre->P(1)->Value.Inverse(length)
 					   , length + 1);
 	else
 	  if ( expre -> GetAttach(1) == 1 )
-	    value = PrimaryFunction::Exp( -expre->P(1)->Value , length + 1);
+	    value = PrimaryFunction::Exp( -expre->P(1)->Value , length);
 	  else
-	    value = PrimaryFunction::Exp( -expre->P(1)->Value.Inverse(length+1)
-					   , length + 1);
+	    value = PrimaryFunction::Exp( -expre->P(1)->Value.Inverse(length)
+					   , length);
 	expre -> detach();
 	result = make( value );
 	return true;
