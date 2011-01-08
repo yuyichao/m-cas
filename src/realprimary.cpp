@@ -174,32 +174,52 @@ namespace CAS
     
     return HighAccuracyNumber();
   };
-  
+
   HighAccuracyNumber PrimaryFunction::Exp( const HighAccuracyNumber &value , int length )
   {
-      HighAccuracyNumber result=HighAccuracyNumber::Divide(value,22,1),temp;
-      if (result.GetSign()>0)
+      if (value.GetSign()>0)
       {
-	 if (result.IsInfinity()||(result.GetPoint()>0)||((result.GetPoint()==0)&&(result[0]>>31)))
+	 if(value.GetPoint()+value.GetLength()>1)
 	    throw "OverFlow";
       }
-      else if (result.GetSign()<0)
+      else if (value.GetSign()<0)
       {
-	 if (result.IsInfinity()||(result.GetPoint()>0)||((result.GetPoint()==0)&&(result[0]>>31)))
+	 if(value.GetPoint()+value.GetLength()>1)
 	    return HighAccuracyNumber::Zero;
       }
-      else if (result.IsNaN())
+      else if (value.IsNaN())
 	 return HighAccuracyNumber::NaN;
       else return HighAccuracyNumber::One;
+      int l=value.GetPoint()+value.GetLength();
+      HighAccuracyNumber result=HighAccuracyNumber::Divide(value,LnB(2),1),temp;
       if (result.GetPoint()==0)
 	 result=HighAccuracyNumber::One<<(result.GetSign()*result[0]);
       else
 	 result=HighAccuracyNumber::One;
-      while(((temp=value-PrimaryFunction::Ln(result,length+1))>HighAccuracyNumber::One<<(-length))||(-temp>HighAccuracyNumber::One<<(-length)))
+      temp=value-PrimaryFunction::Ln(result,1);
+      temp.CutTo(1);
+      if (temp.GetPoint()==0)
+      {
+	 HighAccuracyNumber a=temp,b=HighAccuracyNumber::One,c=HighAccuracyNumber::One,d=HighAccuracyNumber::One;
+	 while(a>=b)
+	 {
+	    d=d+HighAccuracyNumber::Divide(a,b,2);
+	    a=a*temp;
+	    b=b*(c=c+1);
+	 }
+	 result=result*d;
+	 result.CutTo(2);
+      }
+      l=length+2;
+      while(((temp=value-PrimaryFunction::Ln(result,l)).GetLength()+temp.GetPoint()+length>0)||temp.IsZero())
       {
 	 result=result*(HighAccuracyNumber::One+temp);
 	 result.CutTo(length+1);
+	 l=2*(2-temp.GetPoint()-temp.GetLength());
+	 if (l>length+2)
+	    l=length+2;
       }
+      result.CutTo(length);
       return result;
   };
 
