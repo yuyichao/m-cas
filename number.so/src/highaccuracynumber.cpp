@@ -25,20 +25,6 @@
 
 namespace CAS
 {
-  const HighAccuracyNumber HighAccuracyNumber::Infinity = HighAccuracyNumber::GetInfinity();
-  
-  const HighAccuracyNumber HighAccuracyNumber::NaN = HighAccuracyNumber();
-  
-  const HighAccuracyNumber HighAccuracyNumber::Zero = HighAccuracyNumber::GetZero();
-
-  const UInt64 HighAccuracyNumber::A = 1ull << 32;
-  
-  const HighAccuracyNumber HighAccuracyNumber::One = 1;
-  
-  const HighAccuracyNumber HighAccuracyNumber::OneOverTwo = HighAccuracyNumber::One / 2;
-  
-  const HighAccuracyNumber HighAccuracyNumber::ThreeOverFour = HighAccuracyNumber( 3 ) / 4;
-  
   HighAccuracyNumber HighAccuracyNumber::InverseSqrt( const HighAccuracyNumber & value , int length )
   {
     if ( length <= 0 ) length = value.Length;

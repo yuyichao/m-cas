@@ -25,16 +25,6 @@
 
 namespace CAS
 {
-  const ComplexHA ComplexHA::I = ComplexHA( HighAccuracyNumber::Zero , 1 );
-
-  const ComplexHA ComplexHA::Zero = ComplexHA( HighAccuracyNumber::Zero , HighAccuracyNumber::Zero );
-  
-  const ComplexHA ComplexHA::RealInfinity = ComplexHA( HighAccuracyNumber::Infinity , HighAccuracyNumber::Zero );
-  
-  const ComplexHA ComplexHA::ImagInfinity = ComplexHA( HighAccuracyNumber::Zero , HighAccuracyNumber::Infinity );
-  
-  const ComplexHA ComplexHA::NaN = ComplexHA( HighAccuracyNumber::NaN , HighAccuracyNumber::NaN );
-
   ComplexHA::ComplexHA()
     : RePart( 0 ) , ImPart( 0 ){};
 

@@ -33,11 +33,15 @@ namespace CAS
   
   bool Expression::LogNumber( Expression* expre , Expression*& result, int length , ReplaceChain* )
   {
-    if ( expre -> NumOfPara == 1 and expre -> P(0) -> ExpType == Number )
+    if ( expre -> NumOfPara == 1 )
       {
-	result = make( PrimaryFunction::Ln( expre -> P(0) -> Value , length ) );
-	expre -> detach();
-	return true;
+	if ( expre -> P(0) -> ExpType == Number )
+	  {
+	    result = make( PrimaryFunction::Ln( expre -> P(0) -> Value , length ));
+	    expre -> detach();
+	    return true;
+	  }
+	return false;
       }
     if (expre -> P(1) -> ExpType == Number and expre -> P(0) -> ExpType == Number)
       {
@@ -199,7 +203,45 @@ namespace CAS
   
   bool Expression::LogDiff( Expression* expre , Expression*& result, int length , ReplaceChain * condition )
   {
-    
+    if ( expre -> NumOfPara == 1 or expre -> P(1) -> ExpType == E )
+      {
+	if ( expre -> P(0) -> ExpType == Diff )
+	  {
+	    result = make( Diff , 2 );
+	    result -> P(0) = make( Log , 1 );
+	    ( result -> P(0) -> P(0) = expre -> P(0) -> P(0) ) -> attach();
+	    result -> P(1) = make( Multiply , 2 );
+	    result -> P(1) -> Attach[1] = -1;
+	    ( result -> P(1) -> P(0) = expre -> P(0) -> P(1) ) -> attach();
+	    ( result -> P(1) -> P(1) = expre -> P(0) -> P(0) ) -> attach();
+	    expre -> detach();
+	    result = Transform( result , length , condition );
+	    return true;
+	  }
+	return false;
+      }
+    if ( expre -> P(0) -> ExpType == Diff )
+      {
+	result = make( Diff , 2 );
+	result -> P(0) = make( Log , 2 );
+	( result -> P(0) -> P(0) = expre -> P(0) -> P(0) ) -> attach();
+	( result -> P(0) -> P(1) = expre -> P(1) ) -> attach();
+	result -> P(1) = make( Multiply , 3 );
+	result -> P(1) -> Attach[1] = -1;
+	result -> P(1) -> Attach[2] = -1;
+	( result -> P(1) -> P(0) = expre -> P(0) -> P(1) ) -> attach();
+	( result -> P(1) -> P(1) = expre -> P(0) -> P(0) ) -> attach();
+	result -> P(1) -> P(2) = make( Log , 1 );
+	( result -> P(1) -> P(2) -> P(0) = expre -> P(1) ) -> attach();
+	expre -> detach();
+	result = Transform( result , length , condition );
+	return true;
+      }
+    if ( expre -> P(1) -> ExpType == Diff )
+      {
+	
+	return true;
+      }    
     return false;
   };
 }

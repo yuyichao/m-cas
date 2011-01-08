@@ -27,6 +27,30 @@ using namespace std;
 
 namespace CAS
 {
+  const HighAccuracyNumber HighAccuracyNumber::Infinity = HighAccuracyNumber::GetInfinity();
+  
+  const HighAccuracyNumber HighAccuracyNumber::NaN = HighAccuracyNumber();
+  
+  const HighAccuracyNumber HighAccuracyNumber::Zero = HighAccuracyNumber::GetZero();
+
+  const UInt64 HighAccuracyNumber::A = 1ull << 32;
+  
+  const HighAccuracyNumber HighAccuracyNumber::One = 1;
+  
+  const HighAccuracyNumber HighAccuracyNumber::OneOverTwo = HighAccuracyNumber::One / 2;
+  
+  const HighAccuracyNumber HighAccuracyNumber::ThreeOverFour = HighAccuracyNumber( 3 ) / 4;
+  
+  const ComplexHA ComplexHA::I = ComplexHA( HighAccuracyNumber::Zero , 1 );
+
+  const ComplexHA ComplexHA::Zero = ComplexHA( HighAccuracyNumber::Zero , HighAccuracyNumber::Zero );
+  
+  const ComplexHA ComplexHA::RealInfinity = ComplexHA( HighAccuracyNumber::Infinity , HighAccuracyNumber::Zero );
+  
+  const ComplexHA ComplexHA::ImagInfinity = ComplexHA( HighAccuracyNumber::Zero , HighAccuracyNumber::Infinity );
+  
+  const ComplexHA ComplexHA::NaN = ComplexHA( HighAccuracyNumber::NaN , HighAccuracyNumber::NaN );
+
   const NumberType NumberType::RealInfinity = ComplexHA::RealInfinity;
 
   const NumberType NumberType::ImagInfinity = ComplexHA::ImagInfinity;
