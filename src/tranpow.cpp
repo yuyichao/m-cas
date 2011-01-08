@@ -162,14 +162,79 @@ namespace CAS
   bool Expression::PowPow( Expression * expre , Expression *&result , int length
 			   , ReplaceChain * condition )
   {
-    
+    if ( expre -> P(0) -> ExpType == Power )
+      {
+	result = make( Power , 2 );
+	result -> Attach[0]=expre -> GetAttach(0) * expre -> P(0) -> GetAttach(0);
+	( result -> P(0) = expre -> P(0) -> P(0) ) -> attach();
+	result -> P(1) = make( Multiply , 2 );
+	result -> P(1) -> Attach[0] = expre -> P(0) -> Attach[1];
+	result -> P(1) -> Attach[1] = expre -> Attach[1];
+	( result -> P(1) -> P(0) = expre -> P(0) -> P(1) ) -> attach();
+	( result -> P(1) -> P(1) = expre -> P(1) ) -> attach();
+	expre -> detach();
+	result = Transform( result , length , condition );
+	return true;
+      }
     return false;
   };
   
   bool Expression::PowList( Expression * expre , Expression *&result , int length
 			    , ReplaceChain * condition )
   {
-    
+    if ( expre -> P(0) -> ExpType == List and expre -> P(0) -> NumOfPara != 1 )
+      {
+	if ( expre -> P(1) -> ExpType == List and expre -> P(1) -> NumOfPara != 1 )
+	  {
+	    if ( expre -> P(1) -> NumOfPara != expre -> P(1) -> NumOfPara )
+	      {
+		expre -> detach();
+		throw "Length of Lists must be the same";
+	      }
+	    result = make( List , expre -> P(0) -> NumOfPara );
+	    for ( int i = 0 ; i < expre -> P(0) -> NumOfPara ; i++ )
+	      {
+		result -> P(i) = make( Power , 2 );
+		result -> P(i) -> Attach[0] = expre -> GetAttach(0);
+		result -> P(i) -> Attach[1] = expre -> GetAttach(1);
+		( result -> P(i) -> P(0) = expre -> P(0) -> P(i) ) -> attach();
+		( result -> P(i) -> P(1) = expre -> P(1) -> P(i) ) -> attach();
+	      }
+	    expre -> detach();
+	    result = Transform( result , length , condition );
+	    return true;
+	  }
+	else
+	  {
+	    result = make( List , expre -> P(0) -> NumOfPara );
+	    for ( int i = 0 ; i < expre -> P(0) -> NumOfPara ; i++ )
+	      {
+		result -> P(i) = make( Power , 2 );
+		result -> P(i) -> Attach[0] = expre -> GetAttach(0);
+		result -> P(i) -> Attach[1] = expre -> GetAttach(1);
+		( result -> P(i) -> P(0) = expre -> P(0) -> P(i) ) -> attach();
+		( result -> P(i) -> P(1) = expre -> P(1) ) -> attach();
+	      }
+	    expre -> detach();
+	    result = Transform( result , length , condition );
+	    return true;
+	  }
+      }
+    if ( expre -> P(1) -> ExpType == List and expre -> P(1) -> NumOfPara != 1 )
+      {
+	result = make( List , expre -> P(1) -> NumOfPara );
+	for ( int i = 0 ; i < expre -> P(1) -> NumOfPara ; i++ )
+	  {
+	    result -> P(i) = make( Power , 2 );
+	    result -> P(i) -> Attach[0] = expre -> GetAttach(0);
+	    result -> P(i) -> Attach[1] = expre -> GetAttach(1);
+	    ( result -> P(i) -> P(1) = expre -> P(1) -> P(i) ) -> attach();
+	    ( result -> P(i) -> P(0) = expre -> P(0) ) -> attach();
+	  }
+	expre -> detach();
+	result = Transform( result , length , condition );
+	return true;
+      }
     return false;
   };
   
