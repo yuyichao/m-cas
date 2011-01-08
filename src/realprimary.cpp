@@ -190,6 +190,8 @@ namespace CAS
       else if (value.IsNaN())
 	 return HighAccuracyNumber::NaN;
       else return HighAccuracyNumber::One;
+      if(length<=0)
+	 length=value.GetLength();
       int l=value.GetPoint()+value.GetLength();
       HighAccuracyNumber result=HighAccuracyNumber::Divide(value,LnB(2),1),temp;
       if (result.GetPoint()==0)
@@ -271,15 +273,14 @@ namespace CAS
       return result;
    }
 
-  HighAccuracyNumber PrimaryFunction::Power( const HighAccuracyNumber & , const HighAccuracyNumber & , int )
-  {
-    
-    return HighAccuracyNumber();
-  };
+   HighAccuracyNumber PrimaryFunction::Power( const HighAccuracyNumber & a, const HighAccuracyNumber & b, int length)
+   {
+      return PrimaryFunction::Exp(b*PrimaryFunction::Ln(a,length+b.GetPoint()+b.GetLength()),length);
+   }
   
-  HighAccuracyNumber PrimaryFunction::Log( const HighAccuracyNumber & , const HighAccuracyNumber & , int )
+  HighAccuracyNumber PrimaryFunction::Log( const HighAccuracyNumber & a, const HighAccuracyNumber & b, int length)
   {
     
-    return HighAccuracyNumber();
+    return HighAccuracyNumber::Divide(PrimaryFunction::Ln(b,length+1),PrimaryFunction::Ln(a,length+1),length);
   };
 }
