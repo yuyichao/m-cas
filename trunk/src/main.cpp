@@ -61,7 +61,7 @@ void Debug()
 namespace CAS
 {
   string name = "m-cas";
-  int version[4] = {0,0,1,3};
+  int version[4] = {0,0,1,4};
   vector<Expression*> In , Out;
   int countIn = 1;
   void Initial()

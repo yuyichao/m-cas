@@ -243,7 +243,7 @@ namespace CAS
 	str += "ArcCsc";
 	goto Common;
       case Log:
-	if ( NumOfPara == 1 )
+	if ( NumOfPara == 1 or P(1) -> ExpType == E )
 	  {
 	    str += "Log";
 	    goto Common;

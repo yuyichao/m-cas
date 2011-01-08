@@ -72,6 +72,36 @@ namespace CAS
     return false;
   };
   
+  bool Expression::MulLog( Expression *expre , Expression *&result
+			    , int length , ReplaceChain* condition )
+  {
+    for ( int i = 0 ; i < expre -> NumOfPara ; i++ )
+      {
+	if ( expre -> P(i) -> ExpType == Log and expre -> GetAttach(i) == -1
+	     and expre->P(i)->NumOfPara!=1 and expre->P(i)->P(0)->ExpType!=E)
+	  {
+	    result = make( Multiply , expre -> NumOfPara );
+	    for ( int j = 0 ; j < i ; j++ )
+	      {
+		( result -> P(j) = expre -> P(j) ) -> attach();
+		result -> Attach[j] = expre -> Attach[j];
+	      }
+	    result -> P(i) = make( Log , 2 );
+	    ( result -> P(i) -> P(0) = expre -> P(i) -> P(1) ) -> attach();
+	    ( result -> P(i) -> P(1) = expre -> P(i) -> P(0) ) -> attach();
+	    for ( int j = i + 1 ; j < expre -> NumOfPara ; j++ )
+	      {
+		( result -> P(j) = expre -> P(j) ) -> attach();
+		result -> Attach[j] = expre -> Attach[j];
+	      }
+	    expre -> detach();
+	    result = Transform( result , length , condition );
+	    return true;
+	  }
+      }
+    return false;
+  };
+  
   bool Expression::MulZero( Expression *expre , Expression *&result
 			    , int, ReplaceChain* )
   {

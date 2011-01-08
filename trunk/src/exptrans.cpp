@@ -305,6 +305,7 @@ namespace CAS
       SortUp( expre -> Parameter , expre -> NumOfPara );
     if ( MulZero( expre , result , length , condition ) ) return result;
     if ( MulOne( expre , result , length , condition ) ) return result;
+    if ( MulLog( expre , result , length , condition ) ) return result;
     if ( MulNumber( expre , result , length , condition ) ) return result;
     if ( MulMul( expre , result , length , condition ) ) return result;
     if ( MulList( expre , result , length , condition ) ) return result;
@@ -394,7 +395,6 @@ namespace CAS
     if ( LogPow( expre , result , length , condition ) ) return result;
     if ( LogList( expre , result , length , condition ) ) return result;
     if ( LogDiff( expre , result , length , condition ) ) return result;
-    if ( LogLog( expre , result , length , condition ) ) return result;
     if ( LogOne( expre , result , length , condition ) ) return result;
     return expre;
   };
