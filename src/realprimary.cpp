@@ -249,7 +249,7 @@ namespace CAS
       int nx = value.GetPoint() + value.GetLength() - 1;
       if ( 2 * nx > length )
 	 return HighAccuracyNumber::Divide( PrimaryFunction::ValueOfPi( length + 1 ) , PrimaryFunction::Two * PrimaryFunction::AGM( HighAccuracyNumber::One , HighAccuracyNumber::Divide( 4 , value , length + 1 ) , length + 1 ) , length );
-      int l = length + log( length ) + 1;
+      int l = length + (int)log( length ) + 1;
       nx = (( 1 + l ) >> 1 ) - nx;
       HighAccuracyNumber result = HighAccuracyNumber::Divide( PrimaryFunction::ValueOfPi( l + 1 ) , PrimaryFunction::Two * PrimaryFunction::AGM( HighAccuracyNumber::One , HighAccuracyNumber::Divide( 4 , value << nx , l + 1 ) , l + 1 ) , l );
       result = result - nx * PrimaryFunction::LnB( l );

@@ -1,6 +1,6 @@
 ########################################################
 #
-#Created By YYC Makefile Creator 0.8.1
+#Created By YYC Makefile Creator 0.8.2
 #
 ########################################################
 CXX = g++ -c -fPIC

@@ -102,18 +102,16 @@ namespace CAS
 		 and expre -> P(i) -> NumOfPara == 2
 		 and expre -> P(i) -> P(0) -> ExpType == Number
 		 and expre -> P(i) -> GetAttach(1) == 1
-		 and ( *( expre -> P(i) -> P(1) ) 
-		       ==  *( expre -> P(j) ) ))
+		 and ( *( expre -> P(i) -> P(1) ) ==  *( expre -> P(j) ) ))
 	      {
 		att = new int[1];
 		att[0] = 1;
 		sim = true;
-		a = ( att2 = expre -> GetAttach( i ) ) * expre -> GetAttach( j );
-		if ( expre -> P(i) -> GetAttach( 1 ) == 1 )
+		a = ( att2 = expre -> GetAttach(i) ) * expre -> GetAttach(j);
+		if ( expre -> P(i) -> GetAttach(1) == 1 )
 		  a = a + expre -> P(i) -> P(0) -> Value;
 		else
-		  a = a + expre -> P(i) -> P(0) 
-		    -> Value.Inverse( length + 1 );
+		  a = a + expre -> P(i) -> P(0) -> Value.Inverse( length + 1 );
 		tmp1 = new Expression*[1];
 		tmp1[0] = expre -> P(j);
 		loftmp = 1;
@@ -129,8 +127,8 @@ namespace CAS
 		att = new int[1];
 		sim = true;
 		att[0] = 1;
-		a = ( att2 = expre -> GetAttach( i ) ) * expre -> GetAttach( j );
-		if ( expre -> P(j) -> GetAttach( 1 ) == 1 )
+		a = ( att2 = expre -> GetAttach(j) ) * expre -> GetAttach(i);
+		if ( expre -> P(j) -> GetAttach(1) == 1 )
 		  a = a + expre -> P(j) -> P(0) -> Value;
 		else
 		  a = a + expre -> P(j) -> P(0) -> Value.Inverse( length + 1 );
@@ -180,28 +178,28 @@ namespace CAS
 			  {
 			    if ( expre -> P(i) -> GetAttach(0) == 1 )
 			      a = expre -> P(i) -> P(0) -> Value 
-				* expre -> GetAttach( i );
+				* expre -> GetAttach(i);
 			    else
 			      a = expre -> P(i) -> P(0)
 				-> Value.Inverse( length + 1 ) 
-				* expre -> GetAttach( i );
+				* expre -> GetAttach(i);
 			  }
 			else
-			  a =  expre -> GetAttach( i );
+			  a =  expre -> GetAttach(i);
 			if ( l )
 			  {
 			    if ( expre -> P(j) -> GetAttach(0) == 1 )
 			      a = a 
 				+ expre -> P(j) -> P(0) -> Value
-				* expre -> GetAttach( j );
+				* expre -> GetAttach(j);
 			    else
 			      a = a
 				+ expre -> P(j) -> P(0)
 				-> Value.Inverse( length + 1 )
-				* expre -> GetAttach( j );
+				* expre -> GetAttach(j);
 			  }
 			else
-			  a = a + expre -> GetAttach( j );
+			  a = a + expre -> GetAttach(j);
 			goto SimTrCom;
 		      } // end of if ( sim )
 		  } // end Num Equ
@@ -213,17 +211,17 @@ namespace CAS
 		for ( int s = 0 ; s < j ; s++ )
 		  {
 		    ( result -> P(s) = expre -> P(s) ) -> attach();
-		    result -> Attach[s] = expre -> GetAttach( s );
+		    result -> Attach[s] = expre -> GetAttach(s);
 		  }
 		for ( int s = j + 1 ; s < i ; s++ )
 		  {
 		    ( result -> P( s - 1 ) = expre -> P(s) ) -> attach();
-		    result -> Attach[ s - 1 ] = expre -> GetAttach( s );
+		    result -> Attach[ s - 1 ] = expre -> GetAttach(s);
 		  }
 		for ( int s = i + 1 ; s < expre -> NumOfPara ; s++ )
 		  {
 		    ( result -> P( s - 2 ) = expre -> P(s) ) -> attach();
-		    result -> Attach[ s - 2 ] = expre -> GetAttach( s );
+		    result -> Attach[ s - 2 ] = expre -> GetAttach(s);
 		  }
 		result -> P(result->NumOfPara - 1) = make( Multiply , loftmp + 1 );
 		result -> Attach[ result -> NumOfPara - 1 ] = att2;
