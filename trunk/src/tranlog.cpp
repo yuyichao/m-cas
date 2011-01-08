@@ -27,7 +27,59 @@ namespace CAS
 {
   bool Expression::LogSign( Expression* expre , Expression*& result, int length , ReplaceChain * condition )
   {
-
+    if ( expre -> NumOfPara == 1 )
+      {
+	if (expre->P(0)->ExpType==Multiply and expre->P(0)->GetAttach(0)==-1)
+	  {
+	    result = make( Add , 1 );
+	    result -> Attach[0] = -1;
+	    result -> P(0) = make( Log , 1 );
+	    result -> P(0) -> P(0) = make( Multiply , expre -> P(0) -> NumOfPara );
+	    for ( int i = 0 ; i < expre -> P(0) -> NumOfPara ; i++ )
+	      {
+		(result -> P(0) -> P(0) -> P(i) = expre -> P(0) -> P(i))->attach();
+		result -> P(0) -> P(0) -> Attach[i] = -expre -> P(0) -> Attach[i];
+	      }
+	    expre -> detach();
+	    result = Transform( result , length , condition );
+	    return true;
+	  }
+      }
+    else
+      {
+	if (expre->P(0)->ExpType==Multiply and expre->P(0)->GetAttach(0)==-1)
+	  {
+	    result = make( Add , 1 );
+	    result -> Attach[0] = -1;
+	    result -> P(0) = make( Log , 2 );
+	    ( result -> P(0) -> P(1) = expre -> P(1) ) -> attach();
+	    result -> P(0) -> P(0) = make( Multiply , expre -> P(0) -> NumOfPara );
+	    for ( int i = 0 ; i < expre -> P(0) -> NumOfPara ; i++ )
+	      {
+		(result -> P(0) -> P(0) -> P(i) = expre -> P(0) -> P(i))->attach();
+		result -> P(0) -> P(0) -> Attach[i] = -expre -> P(0) -> Attach[i];
+	      }
+	    expre -> detach();
+	    result = Transform( result , length , condition );
+	    return true;
+	  }
+	if (expre->P(1)->ExpType==Multiply and expre->P(1)->GetAttach(0)==-1)
+	  {
+	    result = make( Add , 1 );
+	    result -> Attach[0] = -1;
+	    result -> P(0) = make( Log , 2 );
+	    ( result -> P(0) -> P(0) = expre -> P(0) ) -> attach();
+	    result -> P(0) -> P(1) = make( Multiply , expre -> P(1) -> NumOfPara );
+	    for ( int i = 0 ; i < expre -> P(1) -> NumOfPara ; i++ )
+	      {
+		(result -> P(0) -> P(1) -> P(i) = expre -> P(1) -> P(i))->attach();
+		result -> P(0) -> P(1) -> Attach[i] = -expre -> P(1) -> Attach[i];
+	      }
+	    expre -> detach();
+	    result = Transform( result , length , condition );
+	    return true;
+	  }
+      }
     return false;
   };
   
@@ -239,7 +291,24 @@ namespace CAS
       }
     if ( expre -> P(1) -> ExpType == Diff )
       {
-	
+	result = make( Diff , 2 );
+	result -> P(0) = make( Log , 2 );
+	( result -> P(0) -> P(0) = expre -> P(0) ) -> attach();
+	( result -> P(0) -> P(1) = expre -> P(1) -> P(0) ) -> attach();
+	result -> P(1) = make( Multiply , 4 );
+	result -> P(1) -> Attach[1] = -1;
+	result -> P(1) -> Attach[2] = -1;
+	( result -> P(1) -> P(0) = expre -> P(1) -> P(1) ) -> attach();
+	( result -> P(1) -> P(1) = expre -> P(1) -> P(0) ) -> attach();
+	result -> P(1) -> P(2) = make( Log , 1 );
+	( result -> P(1) -> P(2) -> P(0) = expre -> P(1) -> P(0) ) -> attach();
+	( result -> P(1) -> P(3) = result -> P(0) ) -> attach();
+	expre -> detach();
+	expre = result;
+	result = make( Add , 1 );
+	result -> Attach[0] = -1;
+	result -> P(0) = expre;
+	result = Transform( result , length , condition );
 	return true;
       }    
     return false;
