@@ -28,40 +28,14 @@ using namespace CAS;
 int main()
 {
   Initial();
-  Debug();
   Console();
   return 0;
-};
-
-void DebugSqrt()
-{
-  int n = 2000;
-  ComplexHA a = 1 , b = 1;
-  srand(time(NULL));
-  for ( int i = 0 ; i < n ; i ++ )
-    {
-      a = a * rand();
-      b = b * rand();
-    }
-  a = a + b * ComplexHA::I;
-  cout << "start" << endl;
-  for ( int j = 0 ; j < 1 ; j ++ )
-    {
-      ComplexHA::Sqrt(a);
-    }
-  cout << a.ToString() << endl;
-  cout << "end" << endl;
-  return;
-};
-
-void Debug()
-{
 };
 
 namespace CAS
 {
   string name = "m-cas";
-  int version[4] = {0,0,1,4};
+  int version[4] = {0,0,2,0};
   vector<Expression*> In , Out;
   int countIn = 1;
   void Initial()

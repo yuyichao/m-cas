@@ -348,7 +348,182 @@ namespace CAS
   bool Expression::PowLog( Expression * expre , Expression *&result , int length
 			   , ReplaceChain * condition )
   {
-    
+    if ( expre -> P(1) -> ExpType == Log )
+      {
+	if ( expre -> P(1) -> NumOfPara == 1 )
+	  {
+	    if ( expre -> P(0) -> ExpType == E and expre -> GetAttach(1) == 1 )
+	      {
+		( result = expre -> P(1) -> P(0) ) -> attach();
+		if ( expre -> GetAttach(0) == -1 )
+		  {
+		    expre -> detach();
+		    expre = result;
+		    result = make( Multiply , 1 );
+		    result -> Attach[0] = -1;
+		    result -> P(0) = expre;
+		  }
+		else
+		  expre -> detach();
+		result = Transform( result , length , condition );
+		return true;
+	      }
+	    if(expre->GetAttach(1)==-1 and *(expre->P(0))==*(expre->P(1)->P(0)))
+	      {
+		result = make( E , 0 );
+		if ( expre -> GetAttach(0) == -1 )
+		  {
+		    expre -> detach();
+		    expre = result;
+		    result = make( Multiply , 1 );
+		    result -> Attach[0] = -1;
+		    result -> P(0) = expre;
+		  }
+		else
+		  expre -> detach();
+		result = Transform( result , length , condition );
+		return true;
+	      }
+	    return false;
+	  }
+	if (expre -> GetAttach(1) == 1 and *(expre -> P(0))==*(expre->P(1)->P(1)))
+	  {
+	    ( result = expre -> P(1) -> P(0) ) -> attach();
+	    if ( expre -> GetAttach(0) == -1 )
+	      {
+		expre -> detach();
+		expre = result;
+		result = make( Multiply , 1 );
+		result -> Attach[0] = -1;
+		result -> P(0) = expre;
+	      }
+	    else
+	      expre -> detach();
+	    result = Transform( result , length , condition );
+	    return true;
+	  }
+	if(expre -> GetAttach(1)==-1 and *(expre -> P(0))==*(expre->P(1)->P(0)))
+	  {
+	    ( result = expre -> P(1) -> P(1) ) -> attach();
+	    if ( expre -> GetAttach(0) == -1 )
+	      {
+		expre -> detach();
+		expre = result;
+		result = make( Multiply , 1 );
+		result -> Attach[0] = -1;
+		result -> P(0) = expre;
+	      }
+	    else
+	      expre -> detach();
+	    result = Transform( result , length , condition );
+	    return true;
+	  }
+	return false;
+      }
+    if ( expre -> P(1) -> ExpType == Multiply )
+      {
+	for ( int i = 0 ; i < expre -> P(1) -> NumOfPara ; i++ )
+	  {
+	    if ( expre -> P(1) -> P(i) -> ExpType == Log )
+	      {	
+		if ( expre -> P(1) -> NumOfPara == 1 )
+		  {
+		    if ( expre -> P(1) -> P(0) -> NumOfPara == 1 )
+		      {
+			if (expre -> P(0) -> ExpType == E
+			    and expre->GetAttach(1)*expre->P(1)->GetAttach(0)==1)
+			  {
+			    ( result = expre -> P(1) -> P(0) -> P(0) ) -> attach();
+			    goto Common1;
+			  }
+			if(expre->GetAttach(1) * expre -> P(1) -> GetAttach(0) ==-1
+			   and *(expre->P(0))==*(expre->P(1)->P(0)->P(0)))
+			  {
+			    result = make( E , 0 );
+			    goto Common1;
+			  }
+			return false;
+		      }
+		    if (expre -> GetAttach(1) * expre -> P(1) -> GetAttach(0) == 1
+			and *(expre -> P(0))==*(expre->P(1)->P(0)->P(1)))
+		      {
+			( result = expre -> P(1) -> P(0) -> P(0) ) -> attach();
+			goto Common1;
+		      }
+		    if(expre -> GetAttach(1) * expre -> P(1) -> GetAttach(0) == -1
+		       and *(expre -> P(0))==*(expre->P(1)->P(0)->P(0)))
+		      {
+			( result = expre -> P(1) -> P(0) -> P(1) ) -> attach();
+			goto Common1;
+		      }
+		    return false;
+		  Common1:
+		    if ( expre -> GetAttach(0) == -1 )
+		      {
+			expre -> detach();
+			expre = result;
+			result = make( Multiply , 1 );
+			result -> Attach[0] = -1;
+			result -> P(0) = expre;
+		      }
+		    else
+		      expre -> detach();
+		    result = Transform( result , length , condition );
+		    return true;
+		  }
+		if ( expre -> P(1) -> P(i) -> NumOfPara == 1 )
+		  {
+		    if (expre -> P(0) -> ExpType == E
+			and expre->GetAttach(1)*expre->P(1)->GetAttach(i)==1)
+		      {
+			result = make( Power , 2 );
+			(result -> P(0) = expre -> P(1) -> P(i) -> P(0))->attach();
+			goto Common;
+		      }
+		    if(expre->GetAttach(1) * expre -> P(1) -> GetAttach(i) ==-1
+		       and *(expre->P(0))==*(expre->P(1)->P(i)->P(0)))
+		      {
+			result = make( Power , 2 );
+			result -> P(0) = make( E , 0 );
+			goto Common;
+		      }
+		    return false;
+		  }
+		if (expre -> GetAttach(1) * expre -> P(1) -> GetAttach(i) == 1
+		    and *(expre -> P(0))==*(expre->P(1)->P(i)->P(1)))
+		  {
+		    result = make( Power , 2 );
+		    ( result -> P(0) = expre -> P(1) -> P(i) -> P(0) ) -> attach();
+		    goto Common;
+		  }
+		if(expre -> GetAttach(1) * expre -> P(1) -> GetAttach(i) == -1
+		   and *(expre -> P(0))==*(expre->P(1)->P(i)->P(0)))
+		  {
+		    result = make( Power , 2 );
+		    ( result -> P(0) = expre -> P(1) -> P(i) -> P(1) ) -> attach();
+		    goto Common;
+		  }
+		return false;
+	      Common:
+		result->P(1) = make(Multiply , expre->P(1)->NumOfPara - 1);
+		for ( int j = 0 ; j < i ; j++ )
+		  {
+		    (result->P(1)->P(j)=expre->P(1)->P(j))->attach();
+		    result->P(1)->Attach[j]=expre->P(1)->GetAttach(j);
+		  }
+		for (int j = i ; j < expre -> P(1) -> NumOfPara - 1 ; j++)
+		  {
+		    (result->P(1)->P(j)=expre->P(1)->P(j+1))->attach();
+		    result->P(1)->Attach[j]=expre->P(1)->GetAttach(j+1);
+		  }
+		result -> Attach[0] = expre -> GetAttach(0);
+		result -> Attach[1] = expre -> GetAttach(1);
+		expre -> detach();
+		result = Transform( result , length , condition );
+		return true;
+	      }//end of if Log
+	  }//end of for
+      }//end of if Mul
     return false;
   };
 }

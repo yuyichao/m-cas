@@ -26,7 +26,6 @@
 #define _MAIN_H
 
 int main();
-void Debug();
 
 namespace CAS
 {
@@ -34,7 +33,6 @@ namespace CAS
   extern int version[4];
   extern vector<Expression*> In,Out;
   extern int countIn;
-  void F( int * &a );
   void Initial();
   int Console();
 }
