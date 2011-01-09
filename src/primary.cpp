@@ -364,16 +364,16 @@ namespace CAS
 	    return NumberType::NaN;
 	  case NumberType::Int:
 	    if(length<=2)return NumberType(asin(1/(double)value.Number.IntNumber));
-	    return AecCsc( HighAccuracyNumber( value.Number.IntNumber ) , length );
+	    return ArcCsc( HighAccuracyNumber( value.Number.IntNumber ) , length );
 	  case NumberType::Double:
 	    if(length<=2) return NumberType( asin( 1/value.Number.DoubleNumber ));
-	    return AecCsc( HighAccuracyNumber(value.Number.DoubleNumber),length );
+	    return ArcCsc( HighAccuracyNumber(value.Number.DoubleNumber),length );
 	  case NumberType::HighReal:
-	  return AecCsc( *(value.Number.HReal) , length );
+	  return ArcCsc( *(value.Number.HReal) , length );
 	  case NumberType::DoubleComplex:
-	    return AecCsc( ComplexHA( *(value.Number.DComplex) ) , length );
+	    return ArcCsc( ComplexHA( *(value.Number.DComplex) ) , length );
 	  case NumberType::HighComplex:
-	    return AecCsc( *(value.Number.HAComplex) , length );
+	    return ArcCsc( *(value.Number.HAComplex) , length );
 	  };
       }
     else
@@ -383,11 +383,11 @@ namespace CAS
 	  case NumberType::None:
 	    return NumberType::NaN;
 	  case NumberType::Int:
-	    return AecCsc( ComplexHA( value.Number.IntNumber ) , length );
+	    return ArcCsc( ComplexHA( value.Number.IntNumber ) , length );
 	  case NumberType::Double:
-	    return AecCsc( ComplexHA( value.Number.DoubleNumber ) , length );
+	    return ArcCsc( ComplexHA( value.Number.DoubleNumber ) , length );
 	  case NumberType::HighReal:
-	    return AecCsc( ComplexHA(*(value.Number.HReal)) , length );
+	    return ArcCsc( ComplexHA(*(value.Number.HReal)) , length );
 	  default:
 	    break;
 	  };
