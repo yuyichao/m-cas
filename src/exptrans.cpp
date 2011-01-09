@@ -44,6 +44,7 @@ namespace CAS
     if ( name == "ArcSec" ) return true;
     if ( name == "ArcCsc" ) return true;
     if ( name == "Exp" ) return true;
+    if ( name == "Ln" ) return true;
     if ( name == "Log" ) return true;
     if ( name == "D" ) return true;
     if ( name == "N" ) return true;
