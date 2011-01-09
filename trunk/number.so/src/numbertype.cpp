@@ -45,6 +45,12 @@ namespace CAS
 
   const ComplexHA ComplexHA::Zero = ComplexHA( HighAccuracyNumber::Zero , HighAccuracyNumber::Zero );
   
+  const ComplexHA ComplexHA::One = ComplexHA( HighAccuracyNumber::One , HighAccuracyNumber::Zero );
+  
+  const ComplexHA ComplexHA::Two = ComplexHA(2);
+  
+  const ComplexHA ComplexHA::OneOverTwo = ComplexHA( HighAccuracyNumber::OneOverTwo , HighAccuracyNumber::Zero );
+  
   const ComplexHA ComplexHA::RealInfinity = ComplexHA( HighAccuracyNumber::Infinity , HighAccuracyNumber::Zero );
   
   const ComplexHA ComplexHA::ImagInfinity = ComplexHA( HighAccuracyNumber::Zero , HighAccuracyNumber::Infinity );

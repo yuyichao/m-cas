@@ -131,6 +131,9 @@ namespace CAS
     static const ComplexHA RealInfinity;
     static const ComplexHA ImagInfinity;
     static const ComplexHA NaN;
+    static const ComplexHA One;
+    static const ComplexHA Two;
+    static const ComplexHA OneOverTwo;
     ComplexHA();
     ComplexHA( double value );
     ComplexHA( complex<double> value );
