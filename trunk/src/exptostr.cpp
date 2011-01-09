@@ -245,7 +245,7 @@ namespace CAS
       case Log:
 	if ( NumOfPara == 1 or P(1) -> ExpType == E )
 	  {
-	    str += "Log";
+	    str += "Ln";
 	    goto Common;
 	  }
 	str += "Log[" + Parameter[0] -> ToString() 

@@ -53,7 +53,7 @@ namespace CAS
       case NumberType::None:
 	return NumberType::NaN;
       case NumberType::Int:
-	if ( length <= 2 ) return NumberType( sin( value.Number.IntNumber ) );
+	if(length<=2) return NumberType( sin((double) value.Number.IntNumber ));
 	return Sin( HighAccuracyNumber( value.Number.IntNumber ) , length );
       case NumberType::Double:
 	if ( length <= 2 ) return NumberType( sin( value.Number.DoubleNumber ) );
@@ -76,7 +76,7 @@ namespace CAS
       case NumberType::None:
 	return NumberType::NaN;
       case NumberType::Int:
-	if ( length <= 2 ) return NumberType( cos( value.Number.IntNumber ) );
+	if (length<=2) return NumberType( cos((double)value.Number.IntNumber ));
 	return Cos( HighAccuracyNumber( value.Number.IntNumber ) , length );
       case NumberType::Double:
 	if ( length <= 2 ) return NumberType( cos( value.Number.DoubleNumber ) );
@@ -99,7 +99,7 @@ namespace CAS
       case NumberType::None:
 	return NumberType::NaN;
       case NumberType::Int:
-	if ( length <= 2 ) return NumberType( tan( value.Number.IntNumber ) );
+	if (length<=2) return NumberType( tan((double)value.Number.IntNumber ));
 	return Tan( HighAccuracyNumber( value.Number.IntNumber ) , length );
       case NumberType::Double:
 	if ( length <= 2 ) return NumberType( tan( value.Number.DoubleNumber ) );
@@ -122,7 +122,7 @@ namespace CAS
       case NumberType::None:
 	return NumberType::NaN;
       case NumberType::Int:
-	if ( length <= 2 ) return NumberType( 1/tan( value.Number.IntNumber ) );
+	if (length<=2) return NumberType( 1/tan((double)value.Number.IntNumber ));
 	return Cot( HighAccuracyNumber( value.Number.IntNumber ) , length );
       case NumberType::Double:
 	if ( length <= 2 ) return NumberType( 1/tan( value.Number.DoubleNumber ) );
@@ -146,7 +146,7 @@ namespace CAS
       case NumberType::None:
 	return NumberType::NaN;
       case NumberType::Int:
-	if ( length <= 2 ) return NumberType( 1/cos( value.Number.IntNumber ) );
+	if (length<=2) return NumberType( 1/cos((double)value.Number.IntNumber ));
 	return Sec( HighAccuracyNumber( value.Number.IntNumber ) , length );
       case NumberType::Double:
 	if ( length <= 2 ) return NumberType( 1/cos( value.Number.DoubleNumber ) );
@@ -170,7 +170,7 @@ namespace CAS
       case NumberType::None:
 	return NumberType::NaN;
       case NumberType::Int:
-	if ( length <= 2 ) return NumberType( 1/sin( value.Number.IntNumber ) );
+	if (length<=2) return NumberType( 1/sin((double)value.Number.IntNumber ));
 	return Csc( HighAccuracyNumber( value.Number.IntNumber ) , length );
       case NumberType::Double:
 	if ( length <= 2 ) return NumberType( 1/sin( value.Number.DoubleNumber ) );
@@ -196,7 +196,7 @@ namespace CAS
 	  case NumberType::None:
 	    return NumberType::NaN;
 	  case NumberType::Int:
-	    if ( length <= 2 ) return NumberType( asin( value.Number.IntNumber ) );
+	    if(length<=2)return NumberType( asin((double)value.Number.IntNumber ));
 	    return ArcSin( HighAccuracyNumber( value.Number.IntNumber ) , length );
 	  case NumberType::Double:
 	    if (length <= 2) return NumberType( asin( value.Number.DoubleNumber ));
@@ -237,7 +237,7 @@ namespace CAS
 	  case NumberType::None:
 	    return NumberType::NaN;
 	  case NumberType::Int:
-	    if ( length <= 2 ) return NumberType( acos( value.Number.IntNumber ) );
+	    if(length<=2)return NumberType( acos((double)value.Number.IntNumber) );
 	    return ArcCos( HighAccuracyNumber( value.Number.IntNumber ) , length );
 	  case NumberType::Double:
 	    if (length <= 2) return NumberType( acos( value.Number.DoubleNumber ));
@@ -276,7 +276,7 @@ namespace CAS
       case NumberType::None:
 	return NumberType::NaN;
       case NumberType::Int:
-	if ( length <= 2 ) return NumberType( atan( value.Number.IntNumber ) );
+	if(length<=2)return NumberType( atan((double)value.Number.IntNumber ) );
 	return ArcTan( HighAccuracyNumber( value.Number.IntNumber ) , length );
       case NumberType::Double:
 	if (length <= 2) return NumberType( atan( value.Number.DoubleNumber ));
@@ -402,7 +402,7 @@ namespace CAS
       case NumberType::None:
 	return NumberType::NaN;
       case NumberType::Int:
-	if ( length <= 2 ) return NumberType( exp( value.Number.IntNumber ) );
+	if (length<=2) return NumberType( exp((double)value.Number.IntNumber ));
 	return Exp( HighAccuracyNumber( value.Number.IntNumber ) , length );
       case NumberType::Double:
 	if ( length <= 2 ) return NumberType( exp( value.Number.DoubleNumber ) );
@@ -427,7 +427,7 @@ namespace CAS
 	  case NumberType::None:
 	    return NumberType::NaN;
 	  case NumberType::Int:
-	    if ( length <= 2 ) return NumberType( log( value.Number.IntNumber ) );
+	    if (length<=2)return NumberType( log((double)value.Number.IntNumber ));
 	    return Ln( HighAccuracyNumber( value.Number.IntNumber ) , length );
 	  case NumberType::Double:
 	    if (length <= 2) return NumberType( log( value.Number.DoubleNumber ) );
@@ -479,12 +479,12 @@ namespace CAS
 	      case NumberType::None:
 		return NumberType::NaN;
 	      case NumberType::Int:
-		if(length<=2) return NumberType(pow(value.Number.IntNumber
-						    ,n.Number.IntNumber));
+		if(length<=2) return NumberType(pow((double)value.Number.IntNumber
+						    ,(double)n.Number.IntNumber));
 		return Power(HighAccuracyNumber(value.Number.IntNumber),
 			     HighAccuracyNumber(n.Number.IntNumber), length );
 	      case NumberType::Double:
-		if(length<=2) return NumberType(pow(value.Number.IntNumber
+		if(length<=2) return NumberType(pow((double)value.Number.IntNumber
 						    ,n.Number.DoubleNumber));
 		return Power(HighAccuracyNumber(value.Number.IntNumber),
 			     HighAccuracyNumber(n.Number.DoubleNumber), length );
@@ -507,7 +507,7 @@ namespace CAS
 		return NumberType::NaN;
 	      case NumberType::Int:
 		if(length<=2) return NumberType(pow(value.Number.DoubleNumber
-						    ,n.Number.IntNumber));
+						    ,(double)n.Number.IntNumber));
 		return Power(HighAccuracyNumber(value.Number.DoubleNumber),
 			     HighAccuracyNumber(n.Number.IntNumber), length );
 	      case NumberType::Double:
@@ -609,7 +609,7 @@ namespace CAS
 	      case NumberType::Int:
 		if(length<=2) return NumberType(pow((complex<double>)
 						    value.Number.IntNumber
-						    ,n.Number.IntNumber));
+						    ,(double)n.Number.IntNumber));
 		return Power(ComplexHA(value.Number.IntNumber),
 			     HighAccuracyNumber(n.Number.IntNumber), length );
 	      case NumberType::Double:
@@ -632,7 +632,7 @@ namespace CAS
 	      case NumberType::Int:
 		if(length<=2) return NumberType(pow((complex<double>)
 						    value.Number.DoubleNumber
-						    ,n.Number.IntNumber));
+						    ,(double)n.Number.IntNumber));
 		return Power(ComplexHA(value.Number.DoubleNumber),
 			     ComplexHA(n.Number.IntNumber), length );
 	      case NumberType::Double:
@@ -686,13 +686,13 @@ namespace CAS
 	      case NumberType::None:
 		return NumberType::NaN;
 	      case NumberType::Int:
-		if(length<=2) return NumberType(log_2(value.Number.IntNumber
-						    ,n.Number.IntNumber));
+		if(length<=2)return NumberType(log_2((double)value.Number.IntNumber
+						     ,(double)n.Number.IntNumber));
 		return Log(HighAccuracyNumber(value.Number.IntNumber),
 			   HighAccuracyNumber(n.Number.IntNumber), length );
 	      case NumberType::Double:
 		if(length<=2) return NumberType(log_2<double>
-						(value.Number.IntNumber
+						((double)value.Number.IntNumber
 						 ,n.Number.DoubleNumber));
 		return Log(HighAccuracyNumber(value.Number.IntNumber),
 			   HighAccuracyNumber(n.Number.DoubleNumber), length );
@@ -701,7 +701,7 @@ namespace CAS
 			    , *(n.Number.HReal) , length );
 	      case NumberType::DoubleComplex:
 		if(length<=2) return NumberType(log_2< complex<double> >
-						(value.Number.IntNumber
+						((double)value.Number.IntNumber
 						 ,*(n.Number.DComplex)));
 		return Log(HighAccuracyNumber(value.Number.IntNumber),
 			   ComplexHA(*(n.Number.DComplex)), length );
@@ -717,7 +717,7 @@ namespace CAS
 	      case NumberType::Int:
 		if(length<=2) return NumberType(log_2<double>
 						(value.Number.DoubleNumber
-						 ,n.Number.IntNumber));
+						 ,(double)n.Number.IntNumber));
 		return Log(HighAccuracyNumber(value.Number.DoubleNumber),
 			   HighAccuracyNumber(n.Number.IntNumber), length );
 	      case NumberType::Double:
@@ -765,7 +765,7 @@ namespace CAS
 	      case NumberType::Int:
 		if(length<=2) return NumberType(log_2< complex<double> >
 						(*(value.Number.DComplex)
-						 ,n.Number.IntNumber));
+						 ,(double)n.Number.IntNumber));
 		return Log(ComplexHA(*(value.Number.DComplex)),
 			   HighAccuracyNumber(n.Number.IntNumber), length );
 	      case NumberType::Double:
@@ -820,14 +820,14 @@ namespace CAS
 		return NumberType::NaN;
 	      case NumberType::Int:
 		if(length<=2) return NumberType(log_2< complex<double> >
-						(value.Number.IntNumber
-						 ,n.Number.IntNumber));
+						((double)value.Number.IntNumber
+						 ,(double)n.Number.IntNumber));
 		return Log(ComplexHA(value.Number.IntNumber),
 			   HighAccuracyNumber(n.Number.IntNumber), length );
 	      case NumberType::Double:
 		if(length<=2) return NumberType(log_2< complex<double> >
-						      (value.Number.IntNumber
-						      ,n.Number.DoubleNumber));
+						((double)value.Number.IntNumber
+						 ,n.Number.DoubleNumber));
 		return Log(ComplexHA(value.Number.IntNumber),
 			   HighAccuracyNumber(n.Number.DoubleNumber), length );
 	      case NumberType::HighReal:
@@ -844,7 +844,7 @@ namespace CAS
 	      case NumberType::Int:
 		if(length<=2) return NumberType(log_2< complex<double> >
 						(value.Number.DoubleNumber
-						 ,n.Number.IntNumber));
+						 ,(double)n.Number.IntNumber));
 		return Log(ComplexHA(value.Number.DoubleNumber),
 			   ComplexHA(n.Number.IntNumber), length );
 	      case NumberType::Double:

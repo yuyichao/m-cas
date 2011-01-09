@@ -699,6 +699,7 @@ namespace CAS
     if ( name == "ArcSec" ) { typeofexpre = ArcSec; goto SwitchEnd; }
     if ( name == "ArcCsc" ) { typeofexpre = ArcCsc; goto SwitchEnd; }
     if ( name == "Log" ) { typeofexpre = Log; goto SwitchEnd; }
+    if ( name == "Ln" ) { typeofexpre = Log; goto SwitchEnd; }
     if ( name == "D" ) { typeofexpre = D; goto SwitchEnd; }
     if ( name == "N" ) { typeofexpre = N; goto SwitchEnd; }
     if ( name == "Integrate" ) { typeofexpre = Integrate; goto SwitchEnd; }
