@@ -280,7 +280,6 @@ namespace CAS
   
   HighAccuracyNumber PrimaryFunction::Log( const HighAccuracyNumber & a, const HighAccuracyNumber & b, int length)
   {
-    
     return HighAccuracyNumber::Divide(PrimaryFunction::Ln(b,length+1),PrimaryFunction::Ln(a,length+1),length);
   };
 }
