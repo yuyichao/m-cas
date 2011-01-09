@@ -35,7 +35,7 @@ int main()
 namespace CAS
 {
   string name = "m-cas";
-  int version[4] = {0,0,2,0};
+  int version[4] = {0,0,2,1};
   vector<Expression*> In , Out;
   int countIn = 1;
   void Initial()

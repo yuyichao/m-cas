@@ -87,7 +87,8 @@ namespace CAS
     static NumberType Ln( const NumberType & value , int length );
     static NumberType Power( const NumberType & value , const NumberType & n , int length );
     static NumberType Log( const NumberType & value , const NumberType & n , int length );
-
+    template<typename T>
+    static inline T log_2( T value,T base ){return log(value)/log(base);};
   };
 }
 #endif    //_PRIMARY_H  
