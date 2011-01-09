@@ -57,6 +57,7 @@ namespace CAS
       }
       return HighAccuracyNumber::Divide(x+y,2,length);
    };
+
   HighAccuracyNumber PrimaryFunction::ValueOfE( int )
   {
 
@@ -98,8 +99,7 @@ namespace CAS
 	a.CutTo( l );
 	t.CutTo( l );
      }
-     result = HighAccuracyNumber::Divide( HighAccuracyNumber::Square( a + b )
-					  , 4 * t , length );
+     result = HighAccuracyNumber::Divide( HighAccuracyNumber::Square( a + b ), 4 * t , length );
      return result;
   };
   
@@ -242,8 +242,11 @@ namespace CAS
 	 result = value - HighAccuracyNumber::One;
 	 y = -value;
 	 x = result * y;
-	 if (( z = HighAccuracyNumber::Divide( x , ++i , length + 1 )) > ( result << ( -length )))
+	 while(( z = HighAccuracyNumber::Divide( x , ++i , length + 1 )) > ( result << ( -length )))
+	 {
 	    result = result + z;
+	    x = result * y;
+	 }
 	 return result;
       }
       int nx = value.GetPoint() + value.GetLength() - 1;
