@@ -128,10 +128,40 @@ namespace CAS
      return ComplexHA();
   };
   
-  ComplexHA PrimaryFunction::Exp( const ComplexHA & , int )
+  ComplexHA PrimaryFunction::Exp( const ComplexHA & value , int length)
   {
-    
-     return ComplexHA();
+      if (value.GetRe().GetSign()>0)
+      {
+	 if(value.GetRe().GetPoint()+value.GetRe().GetLength()>1)
+	    throw "OverFlow";
+      }
+      else if (value.IsNaN())
+	 return ComplexHA::NaN;
+      else if (value.IsZero())
+	 return ComplexHA::One;
+      if(length<=0)
+	 length=value.GetLength();
+      ComplexHA result=ComplexHA::One;
+      if (ComplexHA::MSquare(value)>HighAccuracyNumber::One)
+      {
+	 ComplexHA a=value,b=ComplexHA::One,c=ComplexHA::One;
+	 while(ComplexHA::MSquare(a)>=(ComplexHA::MSquare(b)))
+	 {
+	    result=result+ComplexHA::Divide(a,b,2);
+	    a=a*value;
+	    b=b*(c=c+1);
+	 }
+      }
+      int l=length+2;
+      ComplexHA temp;
+      while ((((temp=value-PrimaryFunction::Ln(result,l)).GetRe().GetLength()+temp.GetRe().GetPoint()+length>0)||(temp.GetIm().GetLength()+temp.GetIm().GetLength()))&&(!temp.IsZero()))
+      {
+	 result=result*(ComplexHA::One+temp);
+	 result.LimitLength(length+1);
+	 l=length+2+((result.GetRe().GetPoint()>result.GetIm().GetPoint()?result.GetRe().GetPoint()-result.GetIm().GetPoint():result.GetIm().GetPoint()-result.GetRe().GetPoint())>>1);
+      }
+      result.LimitLength(length);
+      return result;
   };
 
   ComplexHA PrimaryFunction::Ln( const ComplexHA & value, int length )
