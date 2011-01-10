@@ -37,7 +37,7 @@ namespace CAS
       if(a==b) return a;
       x=a;
       y=b;
-      int l=length+1;
+      int l=length+2;
       static double log2 = log(2);
       if(length>2) l+=int(log(log(length)/log2)/log2);
       while (ComplexHA::MSquare(x-y)>(ComplexHA::MSquare(y)<<(-length)))
@@ -147,20 +147,20 @@ namespace CAS
 	 result = value - ComplexHA::One;
 	 y = -value;
 	 x = result * y;
-	 while(ComplexHA::MSquare( z = ComplexHA::Divide( x , ++i , length + 1 )) > ( ComplexHA::MSquare ( result ) << ( -length )))
+	 while(ComplexHA::MSquare( z = ComplexHA::Divide( x , ++i , length + 2 )) > ( ComplexHA::MSquare ( result ) << ( -length )))
 	 {
 	    result = result + z;
 	    x=result*y;
 	 }
 	 return result;
       }
-      int nx = value.GetRe().GetPoint() + value.GetRe().GetLength() + value.GetIm().GetPoint() + value.GetIm().GetLength() - 1;
+      int nx = (( value.GetRe().GetPoint() + value.GetRe().GetLength() + value.GetIm().GetPoint() + value.GetIm().GetLength())>>1) - 1;
       if ( 2 * nx > length )
-	 return ComplexHA::Divide( PrimaryFunction::ValueOfPi( length + 1 ) , ComplexHA::Two * PrimaryFunction::AGM( ComplexHA::One , ComplexHA::Divide( 4 , value , length + 1 ) , length + 1 ) , length );
+	 return ComplexHA::Divide( PrimaryFunction::ValueOfPi( length + 2 ) , ComplexHA::Two * PrimaryFunction::AGM( ComplexHA::One , ComplexHA::Divide( 4 , value , length + 2 ) , length + 2 ) , length );
       int l = length + (int)log( length ) + 1;
       nx = (( 1 + l ) >> 1 ) - nx;
       ComplexHA temp=ComplexHA(value.GetRe()<<nx,value.GetIm()<<nx);
-      ComplexHA result = ComplexHA::Divide( PrimaryFunction::ValueOfPi( l + 1 ) , ComplexHA::Two * PrimaryFunction::AGM(ComplexHA::One , ComplexHA::Divide( 4 , temp , l + 1 ) , l + 1 ) , l );
+      ComplexHA result = ComplexHA::Divide( PrimaryFunction::ValueOfPi( l + 2 ) , ComplexHA::Two * PrimaryFunction::AGM(ComplexHA::One , ComplexHA::Divide( 4 , temp , l + 2 ) , l + 2 ) , l+1);
       result = result - nx * PrimaryFunction::LnB( l );
       result.LimitLength( length );
       return result;
