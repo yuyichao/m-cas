@@ -27,8 +27,15 @@ using namespace CAS;
 
 int main()
 {
-  Initial();
-  Console();
+//  Initial();
+//  Console();
+   ComplexHA a=ComplexHA(0,1);
+   for(int i=1;i<=50;i++)
+   {
+      cout<<i<<"\t"<<(PrimaryFunction::Ln(a,i).GetIm()).ToString()<<endl;
+      cout<<'\t'<<HighAccuracyNumber::Divide(PrimaryFunction::ValueOfPi(i),4,i).ToString()<<endl;
+      cout<<"\t"<<(HighAccuracyNumber::One-PrimaryFunction::Ln(a,i).GetIm()+HighAccuracyNumber::Divide(PrimaryFunction::ValueOfPi(i),4,i)).ToString()<<endl;
+   }
   return 0;
 };
 
