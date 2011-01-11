@@ -443,7 +443,7 @@ namespace CAS
 	expre -> detach();
 	throw "Invaid Input for D";
       }
-    Expression * result;
+    Expression * result = NULL;
     if ( expre -> NumOfPara == 1 )
       {
 	( result = expre -> P(0) ) -> attach();
