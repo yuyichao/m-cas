@@ -33,6 +33,12 @@ namespace CAS
   extern int version[4];
   extern vector<Expression*> In,Out;
   extern int countIn;
+  string readline();
+#ifdef LINUX_
+  void setterm(void);
+  void resetterm(void);
+  void catchsig(int);
+#endif
   void Initial();
   int Console();
 }

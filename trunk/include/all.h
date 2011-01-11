@@ -35,6 +35,12 @@
 #include <float.h>
 #include <complex>
 
+#ifdef LINUX_
+#include <unistd.h>
+#include <termios.h>
+#include <signal.h>
+#endif
+
 #define UInt64 unsigned long long
 #define UInt32 unsigned int
 #define Int64 long long
