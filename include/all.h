@@ -41,10 +41,16 @@
 #include <signal.h>
 #endif
 
-#define UInt64 unsigned long long
-#define UInt32 unsigned int
-#define Int64 long long
-#define Int32 int
+#define UInt128 __uint128_t
+#define UInt64 __uint64_t
+#define UInt32 __uint32_t
+#define UInt16 __uint16_t
+#define UInt8 __uint16_t
+#define Int128 __uint128_t
+#define Int64 __int64_t
+#define Int32 __int32_t
+#define Int16 __uint16_t
+#define Int8 __uint16_t
 
 using namespace std;
 

@@ -537,7 +537,7 @@ namespace CAS
   bool Expression::MulTri( Expression *expre , Expression *&result , int length
 			   , ReplaceChain * condition )
   {
-    Expression * tmp;
+    Expression * tmp = NULL;
     for ( int i = 0 ; i < expre -> NumOfPara ; i++ )
       {
 	for ( int j = 0 ; j < i ; j++ )
