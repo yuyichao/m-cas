@@ -98,40 +98,43 @@ namespace CAS
      return ComplexHA::Divide(ComplexHA::One,temp,length);
   };
   
-  ComplexHA PrimaryFunction::ArcSin( const ComplexHA & , int )
+  ComplexHA PrimaryFunction::ArcSin( const ComplexHA & value, int length)
   {
-    
-     return ComplexHA();
+     ComplexHA temp=PrimaryFunction::Ln(ComplexHA(-value.GetIm(),value.GetRe())+ComplexHA::Sqrt(ComplexHA::One-ComplexHA::Square(value),length+1),length);
+     return ComplexHA(temp.GetIm(),-temp.GetRe());
   };
   
-  ComplexHA PrimaryFunction::ArcCos( const ComplexHA & , int )
+  ComplexHA PrimaryFunction::ArcCos( const ComplexHA & value, int length)
   {
-    
-     return ComplexHA();
+     ComplexHA temp=ComplexHA::Sqrt(ComplexHA::One-ComplexHA::Square(value),length+1);
+     temp=PrimaryFunction::Ln(value+ComplexHA(-temp.GetIm(),temp.GetRe()),length);
+     return ComplexHA(temp.GetIm(),-temp.GetRe());
   };
   
-  ComplexHA PrimaryFunction::ArcTan( const ComplexHA & , int )
+  ComplexHA PrimaryFunction::ArcTan( const ComplexHA & value, int length)
   {
-    
-     return ComplexHA();
+     return ComplexHA::Divide(PrimaryFunction::Ln(ComplexHA::Divide(ComplexHA::One+ComplexHA(-value.GetIm(),value.GetRe()),ComplexHA::One+ComplexHA(value.GetIm(),-value.GetRe()),length+2),length+1),ComplexHA::TwoI,length);
   };
   
-  ComplexHA PrimaryFunction::ArcCot( const ComplexHA & , int )
+  ComplexHA PrimaryFunction::ArcCot( const ComplexHA & value, int length)
   {
-    
-     return ComplexHA();
+     if (value.IsZero())
+	return ComplexHA(HighAccuracyNumber::Divide(PrimaryFunction::ValueOfPi(length),HighAccuracyNumber::Two,length));
+     return PrimaryFunction::ArcTan(ComplexHA::Divide(ComplexHA::One,value,length+1),length);
   };
   
-  ComplexHA PrimaryFunction::ArcSec( const ComplexHA & , int )
+  ComplexHA PrimaryFunction::ArcSec( const ComplexHA & value, int length)
   {
-
-     return ComplexHA();
+     if (value.IsZero())
+	return ComplexHA::NaN;
+     return PrimaryFunction::ArcCos(ComplexHA::Divide(ComplexHA::One,value,length+1),length);
   };
   
-  ComplexHA PrimaryFunction::ArcCsc( const ComplexHA & , int )
+  ComplexHA PrimaryFunction::ArcCsc( const ComplexHA & value, int length)
   {
-    
-     return ComplexHA();
+     if (value.IsZero())
+	return ComplexHA::NaN;
+     return PrimaryFunction::ArcSin(ComplexHA::Divide(ComplexHA::One,value,length+1),length);
   };
   
   ComplexHA PrimaryFunction::Exp( const ComplexHA & value , int length)
@@ -223,14 +226,14 @@ namespace CAS
       return result;
    };
 
-  ComplexHA PrimaryFunction::Power( const ComplexHA & , const ComplexHA & , int )
+  ComplexHA PrimaryFunction::Power( const ComplexHA & a, const ComplexHA & b, int length)
   {
+      return PrimaryFunction::Exp(b*PrimaryFunction::Ln(a,length+(b.GetRe().GetPoint()+b.GetRe().GetLength()>b.GetIm().GetLength()+b.GetIm().GetPoint()?b.GetRe().GetPoint()+b.GetRe().GetLength():b.GetIm().GetPoint()+b.GetIm().GetLength())),length);
   };
 
-  ComplexHA PrimaryFunction::Log( const ComplexHA & , const ComplexHA & , int )
+  ComplexHA PrimaryFunction::Log( const ComplexHA & a, const ComplexHA & b, int length)
   {
-
-     return ComplexHA();
+    return ComplexHA::Divide(PrimaryFunction::Ln(b,length+1),PrimaryFunction::Ln(a,length+1),length);
   }
 
   ComplexHA PrimaryFunction::RePartModTwoPi( const ComplexHA & value , int length )
