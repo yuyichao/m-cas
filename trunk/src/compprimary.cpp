@@ -56,40 +56,46 @@ namespace CAS
     return HighAccuracyNumber();
   };
   
-  ComplexHA PrimaryFunction::Sin( const ComplexHA & , int )
+  ComplexHA PrimaryFunction::Sin( const ComplexHA & value , int length )
   {
-    
-     return ComplexHA();
+     return ComplexHA::Divide(PrimaryFunction::Exp(ComplexHA(-value.GetIm(),value.GetRe()),length+1)-PrimaryFunction::Exp(ComplexHA(value.GetIm(),-value.GetRe()),length+1),ComplexHA::TwoI,length);
   };
   
-  ComplexHA PrimaryFunction::Cos( const ComplexHA & , int )
+  ComplexHA PrimaryFunction::Cos( const ComplexHA & value , int length )
   {
-    
-     return ComplexHA();
+     return ComplexHA::Divide(PrimaryFunction::Exp(ComplexHA(-value.GetIm(),value.GetRe()),length+1)+PrimaryFunction::Exp(ComplexHA(value.GetIm(),-value.GetRe()),length+1),ComplexHA::Two,length);
   };
   
-  ComplexHA PrimaryFunction::Tan( const ComplexHA & , int )
+  ComplexHA PrimaryFunction::Tan( const ComplexHA & value, int length )
   {
-    
-     return ComplexHA();
+     ComplexHA temp=PrimaryFunction::Cos(value,length+1);
+     if (temp.IsZero())
+	return ComplexHA::NaN; 
+     return ComplexHA::Divide(PrimaryFunction::Sin(value,length+1),temp,length);
   };
   
-  ComplexHA PrimaryFunction::Cot( const ComplexHA & , int )
+  ComplexHA PrimaryFunction::Cot( const ComplexHA & value , int length)
   {
-    
-     return ComplexHA();
+     ComplexHA temp=PrimaryFunction::Sin(value,length+1);
+     if (temp.IsZero())
+	return ComplexHA::NaN; 
+     return ComplexHA::Divide(PrimaryFunction::Cos(value,length),temp,length);
   };
   
-  ComplexHA PrimaryFunction::Sec( const ComplexHA & , int )
+  ComplexHA PrimaryFunction::Sec( const ComplexHA & value, int length)
   {
-    
-     return ComplexHA();
+     ComplexHA temp=PrimaryFunction::Cos(value,length+1);
+     if (temp.IsZero())
+	return ComplexHA::NaN; 
+     return ComplexHA::Divide(ComplexHA::One,temp,length);
   };
   
-  ComplexHA PrimaryFunction::Csc( const ComplexHA & , int )
+  ComplexHA PrimaryFunction::Csc( const ComplexHA & value, int length)
   {
-    
-     return ComplexHA();
+     ComplexHA temp=PrimaryFunction::Sin(value,length+1);
+     if (temp.IsZero())
+	return ComplexHA::NaN; 
+     return ComplexHA::Divide(ComplexHA::One,temp,length);
   };
   
   ComplexHA PrimaryFunction::ArcSin( const ComplexHA & , int )

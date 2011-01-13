@@ -186,6 +186,7 @@ namespace CAS
       {
 	 if(value.GetPoint()+value.GetLength()>1)
 	    return HighAccuracyNumber::Zero;
+	 return HighAccuracyNumber::Divide(HighAccuracyNumber::One,PrimaryFunction::Exp(-value,length+1),length);
       }
       else if (value.IsNaN())
 	 return HighAccuracyNumber::NaN;

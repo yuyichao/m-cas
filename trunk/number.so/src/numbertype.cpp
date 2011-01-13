@@ -49,7 +49,9 @@ namespace CAS
   
   const ComplexHA ComplexHA::One = ComplexHA( HighAccuracyNumber::One , HighAccuracyNumber::Zero );
   
-  const ComplexHA ComplexHA::Two = ComplexHA(2);
+  const ComplexHA ComplexHA::Two = ComplexHA(HighAccuracyNumber::Two);
+
+  const ComplexHA ComplexHA::TwoI = ComplexHA(HighAccuracyNumber::Zero,HighAccuracyNumber::Two);
   
   const ComplexHA ComplexHA::OneOverTwo = ComplexHA( HighAccuracyNumber::OneOverTwo , HighAccuracyNumber::Zero );
   
