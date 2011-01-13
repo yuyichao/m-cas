@@ -75,6 +75,7 @@ namespace CAS
     static const HighAccuracyNumber Zero;
     static const UInt64 A;
     static const HighAccuracyNumber One;
+    static const HighAccuracyNumber Two;
     static const HighAccuracyNumber OneOverTwo;
     static const HighAccuracyNumber ThreeOverFour;
     inline int GetSign() const{ if ( IsZero() ) return 0; return Sign; };
@@ -165,6 +166,12 @@ namespace CAS
 	       : ( ImPart.GetPoint() + ImPart.GetLength() ))
 	      - (( RePart.GetPoint() < ImPart.GetPoint() )
 		 ? RePart.GetPoint() : ImPart.GetPoint() )); };
+    inline int GetFP() const
+    { return ((( RePart.GetLength() + RePart.GetPoint() ) 
+		> ( ImPart.GetPoint() + ImPart.GetLength() )) 
+	       ? ( RePart.GetLength() + RePart.GetPoint() )
+	       : ( ImPart.GetPoint() + ImPart.GetLength() ));
+    };
     inline HighAccuracyNumber GetRe() const{ return RePart; };
     inline HighAccuracyNumber GetIm() const{ return ImPart; };
     inline int GetSign() const{ return RePart.GetSign(); };

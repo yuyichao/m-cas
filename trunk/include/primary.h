@@ -71,6 +71,7 @@ namespace CAS
     static ComplexHA Ln( const ComplexHA & value , int length );
     static ComplexHA Power( const ComplexHA & value , const ComplexHA & n , int length );
     static ComplexHA Log( const ComplexHA & value , const ComplexHA & n , int length );
+    static ComplexHA RePartModTwoPi( const ComplexHA & value , int length = 0 );
     static NumberType Sin( const NumberType & value , int length );
     static NumberType Cos( const NumberType & value , int length );
     static NumberType Tan( const NumberType & value , int length );
