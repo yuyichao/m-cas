@@ -58,10 +58,19 @@ namespace CAS
       return HighAccuracyNumber::Divide(x+y,2,length);
    };
 
-  HighAccuracyNumber PrimaryFunction::ValueOfE( int )
+  HighAccuracyNumber PrimaryFunction::ValueOfE( int length )
   {
-
-    return HighAccuracyNumber();
+     static HighAccuracyNumber result=HighAccuracyNumber(3);
+     if (length<=0) return 3;
+     if (length>=result.GetLength())
+     {
+	result=PrimaryFunction::Exp(HighAccuracyNumber::One,length+1);
+	result.CutTo(length+1);
+	return result;
+     }
+     HighAccuracyNumber temp=result;
+     temp.CutTo(length+1);
+     return temp;
   };
 
   HighAccuracyNumber PrimaryFunction::ValueOfPi( int length )
@@ -103,76 +112,64 @@ namespace CAS
      return result;
   };
   
-  HighAccuracyNumber PrimaryFunction::Sin( const HighAccuracyNumber & , int )
+  HighAccuracyNumber PrimaryFunction::Sin( const HighAccuracyNumber & value, int length)
   {
-    
-    return HighAccuracyNumber();
+     return PrimaryFunction::Sin(ComplexHA(value),length).GetRe();
   };
   
-  HighAccuracyNumber PrimaryFunction::Cos( const HighAccuracyNumber & , int )
+  HighAccuracyNumber PrimaryFunction::Cos( const HighAccuracyNumber & value, int length)
   {
-    
-    return HighAccuracyNumber();
+     return PrimaryFunction::Cos(ComplexHA(value),length).GetRe();
   };
   
-  HighAccuracyNumber PrimaryFunction::Tan( const HighAccuracyNumber & , int )
+  HighAccuracyNumber PrimaryFunction::Tan( const HighAccuracyNumber & value, int length)
   {
-    
-    return HighAccuracyNumber();
+     return PrimaryFunction::Tan(ComplexHA(value),length).GetRe();
   };
   
-  HighAccuracyNumber PrimaryFunction::Cot( const HighAccuracyNumber & , int )
+  HighAccuracyNumber PrimaryFunction::Cot( const HighAccuracyNumber & value, int length)
   {
-    
-    return HighAccuracyNumber();
+     return PrimaryFunction::Cot(ComplexHA(value),length).GetRe();
   };
   
-  HighAccuracyNumber PrimaryFunction::Sec( const HighAccuracyNumber & , int )
+  HighAccuracyNumber PrimaryFunction::Sec( const HighAccuracyNumber & value, int length)
   {
-    
-    return HighAccuracyNumber();
+     return PrimaryFunction::Sec(ComplexHA(value),length).GetRe();
   };
   
-  HighAccuracyNumber PrimaryFunction::Csc( const HighAccuracyNumber & , int )
+  HighAccuracyNumber PrimaryFunction::Csc( const HighAccuracyNumber & value, int length)
   {
-    
-    return HighAccuracyNumber();
+     return PrimaryFunction::Csc(ComplexHA(value),length).GetRe();
   };
   
-  HighAccuracyNumber PrimaryFunction::ArcSin( const HighAccuracyNumber & , int )
+  HighAccuracyNumber PrimaryFunction::ArcSin( const HighAccuracyNumber & value, int length)
   {
-    
-    return HighAccuracyNumber();
+     return PrimaryFunction::ArcSin(ComplexHA(value),length).GetRe();
   };
   
-  HighAccuracyNumber PrimaryFunction::ArcCos( const HighAccuracyNumber & , int )
+  HighAccuracyNumber PrimaryFunction::ArcCos( const HighAccuracyNumber & value, int length)
   {
-    
-    return HighAccuracyNumber();
+     return PrimaryFunction::ArcCos(ComplexHA(value),length).GetRe();
   };
   
-  HighAccuracyNumber PrimaryFunction::ArcTan( const HighAccuracyNumber & , int )
+  HighAccuracyNumber PrimaryFunction::ArcTan( const HighAccuracyNumber & value, int length)
   {
-    
-    return HighAccuracyNumber();
+     return PrimaryFunction::ArcTan(ComplexHA(value),length).GetRe();
   };
   
-  HighAccuracyNumber PrimaryFunction::ArcCot( const HighAccuracyNumber & , int )
+  HighAccuracyNumber PrimaryFunction::ArcCot( const HighAccuracyNumber & value, int length)
   {
-    
-    return HighAccuracyNumber();
+     return PrimaryFunction::ArcCot(ComplexHA(value),length).GetRe();
   };
   
-  HighAccuracyNumber PrimaryFunction::ArcSec( const HighAccuracyNumber & , int )
+  HighAccuracyNumber PrimaryFunction::ArcSec( const HighAccuracyNumber & value, int length)
   {
-    
-    return HighAccuracyNumber();
+     return PrimaryFunction::ArcSec(ComplexHA(value),length).GetRe();
   };
   
-  HighAccuracyNumber PrimaryFunction::ArcCsc( const HighAccuracyNumber & , int )
+  HighAccuracyNumber PrimaryFunction::ArcCsc( const HighAccuracyNumber & value, int length)
   {
-    
-    return HighAccuracyNumber();
+     return PrimaryFunction::ArcCsc(ComplexHA(value),length).GetRe();
   };
 
   HighAccuracyNumber PrimaryFunction::Exp( const HighAccuracyNumber &value , int length )
