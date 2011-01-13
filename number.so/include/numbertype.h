@@ -134,6 +134,7 @@ namespace CAS
     static const ComplexHA NaN;
     static const ComplexHA One;
     static const ComplexHA Two;
+    static const ComplexHA TwoI;
     static const ComplexHA OneOverTwo;
     ComplexHA();
     ComplexHA( double value );
