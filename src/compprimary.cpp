@@ -50,10 +50,9 @@ namespace CAS
       return ComplexHA::Divide(x+y,2,length);
    };
 
-  HighAccuracyNumber PrimaryFunction::Arg( const ComplexHA & , int )
+  HighAccuracyNumber PrimaryFunction::Arg( const ComplexHA & value, int length)
   {
-    
-    return HighAccuracyNumber();
+    return PrimaryFunction::Ln(value,length).GetIm();
   };
   
   ComplexHA PrimaryFunction::Sin( const ComplexHA & value , int length )
