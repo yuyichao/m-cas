@@ -141,24 +141,25 @@ namespace CAS
 	 return ComplexHA::One;
       if(length<=0)
 	 length=value.GetLength();
-      ComplexHA result=ComplexHA::One;
-      if (ComplexHA::MSquare(value)>HighAccuracyNumber::One)
+      ComplexHA result=ComplexHA(PrimaryFunction::Exp(value.GetRe(),2));
+      ComplexHA temp;
+      while (ComplexHA::MSquare(temp=PrimaryFunction::RePartModTwoPi(value-PrimaryFunction::Ln(result,2),2))>HighAccuracyNumber::One)
       {
-	 ComplexHA a=value,b=ComplexHA::One,c=ComplexHA::One;
-	 while(ComplexHA::MSquare(a)>=(ComplexHA::MSquare(b)))
+	 ComplexHA a=temp,b=ComplexHA::One,c=ComplexHA::One,d=ComplexHA::One;
+	 while(ComplexHA::MSquare(a)>=ComplexHA::MSquare(b))
 	 {
-	    result=result+ComplexHA::Divide(a,b,2);
-	    a=a*value;
+	    d=d+ComplexHA::Divide(a,b,2);
+	    a=a*temp;
 	    b=b*(c=c+1);
 	 }
+	 result=result*d;
+	 result.LimitLength(2);
       }
-      int l=length+2;
-      ComplexHA temp;
-      while ((((temp=value-PrimaryFunction::Ln(result,l)).GetRe().GetLength()+temp.GetRe().GetPoint()+length>0)||(temp.GetIm().GetLength()+temp.GetIm().GetLength()))&&(!temp.IsZero()))
+      int l=length+1;
+      while ((((temp=PrimaryFunction::RePartModTwoPi(value-PrimaryFunction::Ln(result,l+1),l+1)).GetRe().GetLength()+temp.GetRe().GetPoint()+length>0)&&(!temp.GetRe().IsZero()))||((temp.GetIm().GetLength()+temp.GetIm().GetPoint()+length>0)&&(!temp.GetIm().IsZero())))
       {
 	 result=result*(ComplexHA::One+temp);
-	 result.LimitLength(length+1);
-	 l=length+2+((result.GetRe().GetPoint()>result.GetIm().GetPoint()?result.GetRe().GetPoint()-result.GetIm().GetPoint():result.GetIm().GetPoint()-result.GetRe().GetPoint())>>1);
+	 result.LimitLength(l+1);
       }
       result.LimitLength(length);
       return result;
@@ -166,29 +167,49 @@ namespace CAS
 
   ComplexHA PrimaryFunction::Ln( const ComplexHA & value, int length )
    {
+      if (value.IsSpecial())
+	 return ComplexHA::NaN;
       if ( value == ComplexHA::One )
 	 return ComplexHA::Zero;
+      if ( value == ComplexHA::Zero )
+	 throw "ERROR Log 0";
+      if ( value.GetRe()<0)
+      {
+	 ComplexHA temp=PrimaryFunction::Ln(-value,length+1);
+	 if (temp.GetIm()>0)
+	    temp.SetIm(temp.GetIm()-PrimaryFunction::ValueOfPi(1+length-temp.GetFP()));
+	 else if (temp.GetIm()<0)
+	    temp.SetIm(temp.GetIm()+PrimaryFunction::ValueOfPi(1+length-temp.GetFP()));
+	 else
+	    temp.SetIm(PrimaryFunction::ValueOfPi(1+length-temp.GetRe().GetPoint()-temp.GetRe().GetLength()));
+	 temp.LimitLength(length);
+	 return temp;
+      }
       if ( ComplexHA::MSquare(value) < HighAccuracyNumber::One )
 	 return -PrimaryFunction::Ln(ComplexHA::Divide( ComplexHA::One , value , length + 1 ) , length );
-      if ( ComplexHA::MSquare(value - ComplexHA::One) < HighAccuracyNumber::One << (2*(( length > 1 ) ? -(int)( length / log( length )): -1 )))
+      if ( ComplexHA::MSquare(value - ComplexHA::One) < HighAccuracyNumber::One << ((( length > 1 ) ? -(int)((length-1)/log(length)): -1 )))
       {
 	 ComplexHA result,x,y,z;
-	 int i = 1;
+	 int i = 1,l;
 	 result = value - ComplexHA::One;
-	 y = -value;
-	 x = result * y;
-	 while(ComplexHA::MSquare( z = ComplexHA::Divide( x , ++i , length + 2 )) > ( ComplexHA::MSquare ( result ) << ( -length )))
+	 l=length+1-(result.GetRe().GetLength()+result.GetRe().GetPoint()<result.GetIm().GetLength()+result.GetIm().GetPoint()?result.GetRe().GetLength()+result.GetRe().GetPoint():result.GetIm().GetLength()+result.GetIm().GetPoint());
+	 y = -result;
+	 x= result * y;
+	 while(ComplexHA::MSquare( z = ComplexHA::Divide( x , ComplexHA(++i) , l )) > ( ComplexHA::MSquare ( result ) << ( -length )))
 	 {
 	    result = result + z;
-	    x=result*y;
+	    x=x*y;
 	 }
 	 return result;
       }
       int nx = (( value.GetRe().GetPoint() + value.GetRe().GetLength() + value.GetIm().GetPoint() + value.GetIm().GetLength())>>1) - 1;
       if ( 2 * nx > length )
-	 return ComplexHA::Divide( PrimaryFunction::ValueOfPi( length + 2 ) , ComplexHA::Two * PrimaryFunction::AGM( ComplexHA::One , ComplexHA::Divide( 4 , value , length + 2 ) , length + 2 ) , length );
+      {
+	 ComplexHA result= ComplexHA::Divide( PrimaryFunction::ValueOfPi( length + 2 ) , ComplexHA::Two * PrimaryFunction::AGM( ComplexHA::One , ComplexHA::Divide( 4 , value , length + 2 ) , length + 2 ) , length );
+         return result;
+      }
       int l = length + (int)log( length ) + 1;
-      nx = (( 1 + l ) >> 1 ) - nx;
+      nx = (( 1 + l ) >> 1 ) - nx+2;
       ComplexHA temp=ComplexHA(value.GetRe()<<nx,value.GetIm()<<nx);
       ComplexHA result = ComplexHA::Divide( PrimaryFunction::ValueOfPi( l + 2 ) , ComplexHA::Two * PrimaryFunction::AGM(ComplexHA::One , ComplexHA::Divide( 4 , temp , l + 2 ) , l + 2 ) , l+1);
       result = result - nx * PrimaryFunction::LnB( l );
@@ -198,13 +219,32 @@ namespace CAS
 
   ComplexHA PrimaryFunction::Power( const ComplexHA & , const ComplexHA & , int )
   {
-    
-     return ComplexHA();
   };
 
   ComplexHA PrimaryFunction::Log( const ComplexHA & , const ComplexHA & , int )
   {
 
      return ComplexHA();
-  };
+  }
+
+  ComplexHA PrimaryFunction::RePartModTwoPi( const ComplexHA & value , int length )
+  {
+     if ((value.GetIm()<PrimaryFunction::ValueOfPi(length+1))&&((-value.GetIm())<PrimaryFunction::ValueOfPi(length+1)))
+	return value;
+     HighAccuracyNumber temp;
+     temp=HighAccuracyNumber::Divide(value.GetIm(),HighAccuracyNumber::Two*PrimaryFunction::ValueOfPi(1+value.GetIm().GetPoint()+value.GetIm().GetLength()),1+value.GetIm().GetPoint()+value.GetIm().GetLength());;
+     if (temp.GetLength()+temp.GetPoint()>0)
+     {
+	temp.CutTo(temp.GetLength()+temp.GetPoint());
+	temp=value.GetIm()-temp*HighAccuracyNumber::Two*PrimaryFunction::ValueOfPi(length+temp.GetLength());
+     }
+     else
+	temp=value.GetIm();
+     if (temp>PrimaryFunction::ValueOfPi(length+1))
+	temp=temp-HighAccuracyNumber::Two*PrimaryFunction::ValueOfPi(length+1);
+     else if ((-temp)>PrimaryFunction::ValueOfPi(length+1))
+	temp=temp+HighAccuracyNumber::Two*PrimaryFunction::ValueOfPi(length+1);
+     temp.CutTo(length+temp.GetPoint()+temp.GetLength());
+     return ComplexHA(value.GetRe(),temp);
+  }
 }

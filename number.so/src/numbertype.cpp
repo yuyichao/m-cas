@@ -37,6 +37,8 @@ namespace CAS
   
   const HighAccuracyNumber HighAccuracyNumber::One = 1;
   
+  const HighAccuracyNumber HighAccuracyNumber::Two = 2;
+  
   const HighAccuracyNumber HighAccuracyNumber::OneOverTwo = HighAccuracyNumber::One / 2;
   
   const HighAccuracyNumber HighAccuracyNumber::ThreeOverFour = HighAccuracyNumber( 3 ) / 4;

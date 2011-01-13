@@ -192,14 +192,14 @@ namespace CAS
       else return HighAccuracyNumber::One;
       if(length<=0)
 	 length=value.GetLength();
-      int l=value.GetPoint()+value.GetLength();
+      int l=value.GetPoint()+value.GetLength(),ll;
       HighAccuracyNumber result=HighAccuracyNumber::Divide(value,LnB(2),1),temp;
       if (result.GetPoint()==0)
 	 result=HighAccuracyNumber::One<<(result.GetSign()*result[0]);
       else
 	 result=HighAccuracyNumber::One;
       temp=value-PrimaryFunction::Ln(result,1);
-      temp.CutTo(1);
+      temp.CutTo(2);
       if (temp.GetPoint()==0)
       {
 	 HighAccuracyNumber a=temp,b=HighAccuracyNumber::One,c=HighAccuracyNumber::One,d=HighAccuracyNumber::One;
@@ -211,15 +211,18 @@ namespace CAS
 	 }
 	 result=result*d;
 	 result.CutTo(2);
+      temp=value-PrimaryFunction::Ln(result,1);
+      temp.CutTo(2);
       }
       l=length+2;
-      while(((temp=value-PrimaryFunction::Ln(result,l)).GetLength()+temp.GetPoint()+length>0)||temp.IsZero())
+      ll=l+3*(int)log(l)+10;
+      while(((temp=value-PrimaryFunction::Ln(result,ll)).GetLength()+temp.GetPoint()+length>0)||temp.IsZero())
       {
 	 result=result*(HighAccuracyNumber::One+temp);
 	 result.CutTo(length+1);
 	 l=2*(2-temp.GetPoint()-temp.GetLength());
-	 if (l>length+2)
-	    l=length+2;
+	 if (l>length+4)
+	    l=length+3;
       }
       result.CutTo(length);
       return result;
@@ -235,18 +238,21 @@ namespace CAS
 	 return HighAccuracyNumber::Zero;
       if ( value < HighAccuracyNumber::One )
 	 return -PrimaryFunction::Ln(HighAccuracyNumber::Divide( HighAccuracyNumber::One , value , length + 1 ) , length );
-      if ( value - HighAccuracyNumber::One < HighAccuracyNumber::One << (( length > 1 ) ? -(int)( length / log( length )): -1 ))
+      if ( value - HighAccuracyNumber::One < HighAccuracyNumber::One << (( length > 1 ) ? -(int)( ( length - 1 ) / log( length )): -1 ))
       {
 	 HighAccuracyNumber result,x,y,z;
-	 int i = 1;
+	 int i = 1,l;
 	 result = value - HighAccuracyNumber::One;
+	 l= length+1-result.GetLength()-result.GetPoint();
 	 y = -value;
 	 x = result * y;
-	 while(( z = HighAccuracyNumber::Divide( x , ++i , length + 1 )) > ( result << ( -length )))
+	 while(( z = HighAccuracyNumber::Divide( x , ++i , l )) > ( result << ( -length )))
 	 {
 	    result = result + z;
 	    x = result * y;
+	    x.CutTo(l);
 	 }
+	 result.CutTo(length);
 	 return result;
       }
       int nx = value.GetPoint() + value.GetLength() - 1;
