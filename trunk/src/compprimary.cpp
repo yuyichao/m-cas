@@ -194,7 +194,7 @@ namespace CAS
 	 return temp;
       }
       if ( ComplexHA::MSquare(value) < HighAccuracyNumber::One )
-	 return -PrimaryFunction::Ln(ComplexHA::Divide( ComplexHA::One , value , length + 1 ) , length );
+	 return -PrimaryFunction::Ln(ComplexHA::Divide( ComplexHA::One , value , length + 2 ) , length );
       if ( ComplexHA::MSquare(value - ComplexHA::One) < HighAccuracyNumber::One << ((( length > 1 ) ? -(int)((length-1)/log(length)): -1 )))
       {
 	 ComplexHA result,x,y,z;
