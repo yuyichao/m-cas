@@ -193,8 +193,9 @@ namespace CAS
 	 temp.LimitLength(length);
 	 return temp;
       }
-      if ( ComplexHA::MSquare(value) < HighAccuracyNumber::One )
-	 return -PrimaryFunction::Ln(ComplexHA::Divide( ComplexHA::One , value , length + 2 ) , length );
+      HighAccuracyNumber tmp;
+      if ( ( tmp=ComplexHA::MSquare(value)-HighAccuracyNumber::One)<0 )
+	 return -PrimaryFunction::Ln(ComplexHA::Divide( ComplexHA::One , value , length -tmp.GetLength()-tmp.GetPoint()+ 2 ) , length );
       if ( ComplexHA::MSquare(value - ComplexHA::One) < HighAccuracyNumber::One << ((( length > 1 ) ? -(int)((length-1)/log(length)): -1 )))
       {
 	 ComplexHA result,x,y,z;
