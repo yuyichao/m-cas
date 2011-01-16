@@ -234,8 +234,9 @@ namespace CAS
 	 return HighAccuracyNumber::Infinity;
       if ( value == HighAccuracyNumber::One )
 	 return HighAccuracyNumber::Zero;
-      if ( value < HighAccuracyNumber::One )
-	 return -PrimaryFunction::Ln(HighAccuracyNumber::Divide( HighAccuracyNumber::One , value , length + 1 ) , length );
+      HighAccuracyNumber temp;
+      if ( ( temp=value - HighAccuracyNumber::One )<0)
+	 return -PrimaryFunction::Ln(HighAccuracyNumber::Divide( HighAccuracyNumber::One , value , length -temp.GetPoint()-temp.GetLength()+ 1 ) , length );
       if ( value - HighAccuracyNumber::One < HighAccuracyNumber::One << (( length > 1 ) ? -(int)( ( length - 1 ) / log( length )): -1 ))
       {
 	 HighAccuracyNumber result,x,y,z;
